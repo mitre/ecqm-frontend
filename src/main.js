@@ -1,27 +1,28 @@
-$ = jQuery = require('jquery');
-var React = require('react');
-var Home = require('./components/homePage');
-var About = require('./components/about/aboutPage');
-var Authors = require('./components/authors/authorsPage');
-var Header = require('./components/common/header');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {App} from './components/App';
+
+// import Home from './components/homePage';
+// import About from './components/about/aboutPage';
+// import Authors from './components/authors/authorsPage';
+import Header from './components/common/header';
 
 (function(win) {
   "use strict";
 
   var App = React.createClass({
     render: function() {
-      var Child;
+      // var Child;
 
-      switch(this.props.route) {
-        case 'about': Child = About; break;
-        case 'authors': Child = Authors; break;
-        default: Child = Home;
-      }
+      // switch(this.props.route) {
+      //   case 'about': Child = About; break;
+      //   case 'authors': Child = Authors; break;
+      //   default: Child = Home;
+      // }
 
       return (
         <div>
           <Header />
-          <Child />
         </div>
       );
     }
@@ -29,7 +30,7 @@ var Header = require('./components/common/header');
 
   function render() {
     var route = win.location.hash.substr(1);
-    React.render(<App route={route} />, document.getElementById('app'));
+    ReactDOM.render(<App route={route} />, document.getElementById('app'));
   }
 
   win.addEventListener('hashchange', render);

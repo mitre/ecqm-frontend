@@ -1,14 +1,12 @@
-"use strict";
+import React from 'react';
 
-var React = require('react');
-
-var Header = React.createClass({
+export default React.createClass({
   render: function() {
     return (
       <nav className="navbar navbar-default">
         <div className="container-fluid">
           <a href="/" className="navbar-brand">
-            <img src="images/pophealth-logo-3x.png" width="100"/>
+            <img src="/assets/images/pophealth-logo-3x.png" width="100"/>
           </a>
 
           <ul className="nav navbar-nav">
@@ -19,5 +17,3 @@ var Header = React.createClass({
     );
   }
 });
-
-module.exports = Header;

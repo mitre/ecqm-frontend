@@ -1,0 +1,498 @@
+
+$circle-bkg-color: #fff;
+$title-circle-radius: 21px;
+
+// Custom styles that are part of the theme
+
+.aggregate-btn {
+  margin-bottom: 15px;
+  width: 100%;
+  background-color: $gray-lighter;
+  text-align: center;
+}
+.aggregate-result {
+  margin-top: -10px;
+
+  #aggregate-header {
+    font-weight: 400;
+    font-size: 18px;
+  }
+
+  #aggregate-value {
+    font-size: 22px;
+    font-weight: 500;
+    color: #4A4A4A;
+  }
+
+}
+
+.user-profile {
+  table-layout: fixed;
+  width: 80%;
+}
+.up-col {
+  width: 200px;
+}
+
+.dropdown {
+  position: relative;
+}
+.effective-date-header{
+  font-size: 16px;
+}
+.effective-date-picker {
+  width: 100px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  height: 28px;
+  position: relative;
+}
+.effective-date-btn{
+  border: 0;
+  height: 28px;
+  width: 30px;
+  padding-left: 5px;
+}
+
+.team-submeasure {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  .provider-info {
+    float: left;
+    margin-top: 15px;
+    width: 200px;
+    font-size: 16px;
+  }
+}
+
+.team-patient-btn {
+  float: right;
+}
+.team-provider-patients-btn {
+  margin-top: 18px;
+}
+
+.team-name {
+  float: left;
+  font-size: 20pt;
+  margin-left: 10px;
+}
+.team-measure-header {
+  background-color: $gray-lighter;
+  @include make-row(0);
+}
+.team-measure-view {
+  margin-left: 10px;
+}
+
+.userTeams {
+  width: 50%;
+}
+
+#team_list_table tbody {
+  height: 300px;
+  overflow: scroll;
+}
+
+body {
+  margin-bottom: 40px;
+}
+
+#measureSelectors {
+  word-wrap: break-word;
+}
+
+.export-patients-btn {
+  float: right;
+  width: 180px;
+}
+
+.export-team-report-btn {
+  margin-top: 2px;
+}
+
+.practice_select {
+  max-width: 300px;
+}
+.practices {
+  margin-left:40px;
+  margin-right:40px;
+  width:60%;
+}
+
+.practice-btn {
+  margin-right: 40px;
+}
+
+.measure {
+  @extend .row;
+  .measure-title-id {
+    // .make-xs-column(3);
+    @include make-xs-column(5, 0); // use gutter of 0, to eliminate left gutter
+    // margin-right: $grid-gutter-width / 2; // reintroduce right gutter
+    min-height: 100px;
+  }
+  .percent-listing {
+    @include make-xs-column(2);
+  }
+  .patient-btn {
+    @extend .btn;
+    @extend .btn-default;
+  }
+}
+
+.row-remainder {
+  @include make-xs-column(5, 0);
+}
+
+.team-prov-row-remainder {
+  @include make-xs-column(6, 0);
+}
+
+
+.fraction-listing {
+  margin: 10px 5px;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: 500;
+  .numerator, .denominator {
+    width: 60px;
+  }
+  .denominator {
+    border-top: 1px solid black;
+  }
+}
+
+.measure-type {
+  line-height: 2.5;
+  width: 18px;
+  .fa, .glyphicon {
+    text-align: center;
+    width: 100%;
+  }
+  .fa {
+    font-size: 1.53em;
+  }
+  .glyphicon {
+    font-size: 1.14em;
+  }
+}
+
+.measure-type, .patient-btn {
+  margin-top: 18px;
+}
+
+
+// Custom classes for semantic mark-up
+// font-size -> 1em = 14px
+
+// Dashboard
+
+.nav {
+  font-weight: 500;
+
+  .location {
+    margin-top: 4px
+  }
+  .profile {
+    margin-top: 14px;
+  }
+}
+.header-actions {
+  margin-top: 24px;
+  margin-right: $grid-gutter-width/2;
+}
+
+.category {
+  background-color: $gray-lighter;
+  margin-top: 1em;
+  .category-title {
+    line-height: 2em;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+  .category-percent .title-circle, .category-time .title-circle {
+    @extend .center-block;
+    border-radius: $title-circle-radius;
+    @include square($title-circle-radius * 2);
+    background-color: $circle-bkg-color;
+    text-align: center;
+    font-size: 1.7em;
+  }
+  .category-percent .title-circle {
+    padding-top: 5px;
+  }
+  .category-time .title-circle {
+    padding-top: 1px;
+  }
+  .category-fraction {
+    .fraction-listing {
+      font-weight: 400;
+      font-size: 12px;
+      margin: 4px 0 0 -10px;
+      padding-left: 7px;
+
+      .numerator,
+      .denominator {
+        width: 80px;
+      }
+    }
+  }
+}
+
+.selection-pull-out {
+  @extend .pull-right;
+  margin: 0 0 3px 3px;
+  .measure-count {
+    @extend .badge;
+  }
+  i {
+    vertical-align: top;
+  }
+}
+
+.measure {
+  @include make-row(0);
+  position: relative;
+  .measure-identifier {
+    @extend .pull-left;
+    background-color: $gray-lighter;
+    min-width: 44px;
+    padding: 35px 4px;
+    text-align: center;
+    position: absolute;
+    top: 0; bottom: 0;
+    min-height: 100px;
+    .cms-cms {
+      color: $brand-primary;
+      font-size: 0.8em;
+      letter-spacing: 2px;
+    }
+    .cms-number {
+      font-size: 1.6em;
+      font-weight: 300;
+    }
+    .cms-version {
+      color: $brand-primary;
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+  }
+  .measure-info {
+    margin-top: 25px;
+  }
+  .measure-title {
+    padding-top: 10px;
+    margin-left: 50px;
+    font-size: 16px;     // Has to be in pixels otherwise popover inherits font-size
+  }
+  .measure-subtitle {
+    margin-left: 75px;
+    padding-top: 15px;
+  }
+  &:first-child .measure-subtitle {
+    padding-top: 5px;
+  }
+  .glyphicon-info-sign {
+    font-size: 14px;
+    color: #999;
+  }
+  .percent-listing {
+    text-align: center;
+  }
+
+}
+
+// click anywhere on a toggleable panel heading to open/close
+.panel-heading.toggleable {
+  cursor: pointer;
+}
+
+.percentage {
+  line-height: 2.5;
+  font-size: 26px;
+  font-weight: 400;
+  color: #4A4A4A;
+  small {
+    font-size: 16px;
+    padding-left: 2px;
+  }
+}
+
+.dial {
+  font-size: 24px !important;
+}
+
+.pop-chart {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 50px;
+  width: 165px;
+  // shrink this down on smaller displays
+  @media (max-width: $screen-md-max) {
+    width: 100px;
+  }
+  svg {
+    @include size(100%, 100%);
+    rect {
+      stroke:white;
+      stroke-width: 0px;
+      fill: rgb(205,205,205);
+    }
+    .numer {
+      fill: rgb(59,133,140);
+    }
+    .denex, .denexc {
+      fill: rgb(193,193,193);
+    }
+    .denom {
+      fill: rgb(239,239,239);
+      stroke: rgb(193,193,193);
+      stroke-width: 1px;
+    }
+    .arrow {
+      fill: rgb(204,204,204);
+    }
+  }
+}
+
+
+// New styles for side bar for the measure view/patient list
+// TODO Clean up these styles once pages are integrated and complete.
+
+.population-btn {
+  @extend .btn;
+  @extend .btn-default;
+  @extend .btn-block;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  .query-result {
+    @extend .pull-right;
+    font-size: 1.15em;
+    font-weight: bold;
+  }
+  .title {
+    @extend .pull-left;
+  }
+  &.active {
+    @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  }
+}
+
+.large-icon {
+  font-size: 20px;
+  padding: 2px 8px;
+}
+
+$table-border-color: white;
+.table {
+  thead {
+    background-color: $gray-lighter;
+    > tr > th {
+      border: none;
+      font-weight: 700;
+    }
+  }
+  > thead > tr > th, > tbody > tr > td {
+    line-height: 2;
+    font-size: 1em;
+    vertical-align: middle;
+    .btn-default {
+      padding: 7px 10px;
+    }
+  }
+}
+
+.col-patient-medical-record-id {
+  max-width: 115px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+#measureSummary {
+  // FIXME this should build on the media query for large monitors
+  .dl-horizontal dt {
+    width: 175px;
+  }
+
+  @mixin measure-border-level-n($n) {
+    background-color: lighten($brand-primary, percentage(0.5 - $n / 10));
+  }
+
+  .measure-border {
+    background-color: $brand-primary;
+    padding: 2px;
+    border-radius: 10px;
+    .icon-border {
+      @extend .pull-left;
+      border: 2px solid #4b979d;
+      border-radius: $title-circle-radius;
+      color: $brand-primary;
+      display: inline-block;
+      line-height: $title-circle-radius * 2;
+      margin: 2px;
+      text-align: center;
+      height: $title-circle-radius * 2;
+      width: $title-circle-radius * 2;
+    }
+    @include measure-border-level-n(1);
+    .measure-border {
+      @include measure-border-level-n(2);
+      .measure-border {
+        @include measure-border-level-n(3);
+        .measure-border {
+          @include measure-border-level-n(4);
+          .measure-border {
+            @include measure-border-level-n(5);
+          }
+        }
+      }
+    }
+    .measure-item {
+      background-color: $body-bg;
+      border-radius: 10px;
+      margin: 2px 2px 2px 20px;
+      .measure-content {
+        @include clearfix;
+        padding: 2px;
+        .measure-inner {
+          padding: 12px 0;
+        }
+      }
+    }
+  }
+
+  .conjunction, .temporal-operator {
+    background-color: $gray-lighter;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: 10px;
+    font-weight: bold;
+    display: inline-block;
+    &.negation {
+      color: white;
+      background-color: $brand-danger;
+    }
+  }
+}
+
+#editMeasureDialog {
+  input, select{
+    margin: 5px 0;
+    border-radius: none;
+  }
+
+  label {
+    margin-left: 10px;
+  }
+}
+
+
+.team-provider-loading-text {
+  font-weight: bold;
+  padding-top: 20px;
+
+}
+
