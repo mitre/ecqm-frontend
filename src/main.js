@@ -1,38 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {App} from './components/App';
-
-// import Home from './components/homePage';
-// import About from './components/about/aboutPage';
-// import Authors from './components/authors/authorsPage';
+import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { Router, Route, browserHistory } from 'react-router';
+import { createHistory } from 'history';
+import { syncHistory, routeReducer, routeActions } from 'redux-simple-router';
+import { App } from './components/App';
 import Header from './components/common/header';
 
-(function(win) {
-  "use strict";
+const reducer = combineReducers({
+  routing: routeReducer
+});
 
-  var App = React.createClass({
-    render: function() {
-      // var Child;
+// Sync dispatched route actions to the history
+const reduxRouterMiddleware = syncHistory(browserHistory);
+const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware)(createStore);
 
-      // switch(this.props.route) {
-      //   case 'about': Child = About; break;
-      //   case 'authors': Child = Authors; break;
-      //   default: Child = Home;
-      // }
+const store = createStoreWithMiddleware(reducer);
 
-      return (
-        <div>
-          <Header />
-        </div>
-      );
-    }
-  });
+// Required for replaying actions from devtools to work
+reduxRouterMiddleware.listenForReplays(store)
 
-  function render() {
-    var route = win.location.hash.substr(1);
-    ReactDOM.render(<App route={route} />, document.getElementById('app'));
-  }
+window.store = store;
+window.routeActions = routeActions;
 
-  win.addEventListener('hashchange', render);
-  render();
-})(window);
+ReactDOM.render(
+  <Provider store={store}>
+    <div>
+      <Header />
+      <Router history={browserHistory}>
+        <Route path="/" component={App} />
+      </Router>
+    </div>
+  </Provider>,
+  document.getElementById('app')
+);

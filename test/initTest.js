@@ -1,8 +1,7 @@
-import assert from 'assert'
+var assert = require('assert');
 
-
-describe('root', () => {
-  it('2+2 should equal 4', () => {
+describe('root', function() {
+  it('2+2 should equal 4', function() {
     assert.equal(4, 2+2);
-  })
-})
+  });
+});

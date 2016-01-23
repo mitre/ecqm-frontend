@@ -19,14 +19,6 @@
     "url": "https://github.com/mitre/ecqm-frontend/issues"
   },
   "homepage": "https://github.com/mitre/ecqm-frontend",
-  "dependencies": {
-    "es6-promise": "^3.0.2",
-    "immutable": "^3.7.6",
-    "isomorphic-fetch": "^2.2.0",
-    "react": "^0.14.6",
-    "react-dom": "^0.14.6",
-    "redux": "^3.0.5"
-  },
   "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-eslint": "^4.1.6",
@@ -35,6 +27,7 @@
     "babelify": "^7.2.0",
     "bootstrap-sass": "^3.3.6",
     "browserify": "^13.0.0",
+    "es6-promise": "^3.0.2",
     "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
@@ -42,8 +35,17 @@
     "gulp-eslint": "^1.1.1",
     "gulp-open": "^1.0.0",
     "gulp-sass": "^2.1.1",
+    "history": "^2.0.0-rc2",
+    "immutable": "^3.7.6",
+    "isomorphic-fetch": "^2.2.0",
     "mocha": "^2.3.4",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-redux": "^4.0.6",
+    "react-router": "^2.0.0-rc5",
     "reactify": "^1.1.1",
+    "redux": "^3.0.5",
+    "redux-simple-router": "^2.0.4",
     "vinyl-source-stream": "^1.1.0"
   }
 }
