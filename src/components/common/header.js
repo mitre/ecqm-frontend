@@ -1,19 +1,21 @@
 import React from 'react';
+import { Link } from 'react-router';
 
-export default React.createClass({
+export default class Header extends React.Component {
   render() {
     return (
       <nav className="navbar navbar-default">
         <div className="container-fluid">
-          <a href="/" className="navbar-brand">
+          <Link to="/" className="navbar-brand">
             <img src="/assets/images/pophealth-logo-3x.png" width="100"/>
-          </a>
+          </Link>
 
           <ul className="nav navbar-nav">
-            <li><a href="/#">Home</a></li>
+            <li><Link to="/">Homes</Link></li>
+            <li><Link to="/users/sign_in">Sign In</Link></li>
           </ul>
         </div>
       </nav>
     );
   }
-});
+}

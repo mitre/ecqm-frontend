@@ -3,7 +3,6 @@ var connect = require('gulp-connect'); // runs a local dev server
 var open = require('gulp-open'); // opens a URL in a web browser
 var browserify = require('browserify'); // bundles JS
 var babelify = require('babelify'); // transforms to ES6
-var reactify = require('reactify'); // transforms JSX into JS
 var source = require('vinyl-source-stream'); // uses conventional text streams with gulp
 var concat = require('gulp-concat'); // concatenates files
 var lint = require('gulp-eslint'); // lints JS files, including JSX
@@ -38,7 +37,8 @@ gulp.task('connect', function() {
     root: ['dist'],
     port: config.port,
     base: config.devBaseUrl,
-    livereload: true
+    livereload: true,
+    fallback: 'dist/index.html'
   });
 });
 
