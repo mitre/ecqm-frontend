@@ -27,13 +27,17 @@ var config = {
     ],
     images: './src/images/*',
     dist: './dist',
-    mainJs: './src/main.js'
+    mainJs: './src/index.js',
+    externalJs: [
+      './node_modules/jquery/dist/jquery.js',
+      './node_modules/bootstrap-sass/assets/javascripts/bootstrap.js'
+    ]
   }
 };
 
 // starts a local development server
 gulp.task('connect', function() {
-  connect.server({
+  return connect.server({
     root: ['dist'],
     port: config.port,
     base: config.devBaseUrl,
@@ -51,8 +55,13 @@ gulp.task('html', function() {
 
 // bundles js files, moves them to dist folder, and reloads
 gulp.task('js', function() {
+  gulp.src(config.paths.externalJs)
+      .pipe(gulp.dest(config.paths.dist + '/assets/scripts'))
+      .pipe(connect.reload());
+
   return browserify({
     entries: config.paths.mainJs,
+    require: config.paths.extJs,
     extensions: ['.js'],
     debug: true
   })
