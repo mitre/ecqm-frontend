@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
+import { fetchMeasuresIfNeeded } from '../actions/index'
+import { connect } from 'react-redux'
 
-export default class MeasureDisplay extends Component {
+class MeasureDisplay extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.onFetchMeasures();
+  }
+
   render() {
     return (
       <div>
@@ -26,16 +36,13 @@ export default class MeasureDisplay extends Component {
                   <div className="btn-block-container">
                     <button type="button" className="btn btn-checkbox btn-block all">Select All</button>
                   </div>
+                  {this.props.measures.map(measure =>
                   <div className="btn-block-container">
                     <button type="button" className="btn btn-checkbox btn-block individual">
-                      CMS136v4/0108 - ADHD: Follow-Up Care for Children Prescribed Attention-Deficit/Hyperactivity Disorder (ADHD) Medication
+                      {measure.cmsId} - {measure.name}
                     </button>
                   </div>
-                  <div className="btn-block-container">
-                    <button type="button" className="btn btn-checkbox btn-block individual">
-                      CMS146v3/0002 - Appropriate Testing for Children with Pharyngitis
-                    </button>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -50,3 +57,27 @@ export default class MeasureDisplay extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetchMeasures: () => {
+      dispatch(fetchMeasuresIfNeeded())
+    }
+  }
+}
+
+const mapStateToProps = (state) => {
+  if (state.measures) {
+    return {
+      isFetching: state.measures.isFetching,
+      measures: state.measures.measures
+    }
+  } else {
+    return {
+      isFetching: true,
+      measures: []
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MeasureDisplay)
