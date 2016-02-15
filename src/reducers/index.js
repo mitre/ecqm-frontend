@@ -3,7 +3,7 @@ import { routeReducer } from 'react-router-redux';
 
 import {
   REQUEST_MEASURES, RECEIVE_MEASURES
-} from '../actions/index'
+} from '../actions/index';
 
 function measures(state = {
   isFetching: false,
@@ -13,14 +13,14 @@ function measures(state = {
     case REQUEST_MEASURES:
       return Object.assign({}, state, {
         isFetching: true
-      })
+      });
     case RECEIVE_MEASURES:
       return Object.assign({}, state, {
         isFetching: false,
         measures: action.measures
-      })
+      });
     default:
-      return state
+      return state;
   }
 }
 

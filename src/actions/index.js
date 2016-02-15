@@ -1,7 +1,7 @@
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
 
-export const REQUEST_MEASURES = 'REQUEST_MEASURES'
-export const RECEIVE_MEASURES = 'RECEIVE_MEASURES'
+export const REQUEST_MEASURES = 'REQUEST_MEASURES';
+export const RECEIVE_MEASURES = 'RECEIVE_MEASURES';
 
 function requestMeasures() {
   return {
@@ -18,16 +18,16 @@ function receiveMeasures(json) {
 
 function fetchMeasures() {
   return dispatch => {
-    dispatch(requestMeasures())
+    dispatch(requestMeasures());
     return fetch(`http://localhost:3001/Measure`)
       .then(req => req.json())
-      .then(json => dispatch(receiveMeasures(json)))
-  }
+      .then(json => dispatch(receiveMeasures(json)));
+  };
 }
 
 function shouldFetchMeasures(state) {
   const measures = state.measures;
-  if (measures.measures.length == 0 && ! measures.isFetching) {
+  if (measures.measures.length === 0 && ! measures.isFetching) {
     return true;
   } else {
     return false;
