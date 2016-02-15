@@ -49,8 +49,8 @@ const mapDispatchToProps = (dispatch) => {
 function flattenMeasures(measures) {
   let uniqueMeasures = [];
   measures.forEach((m) => {
-    let reducedMeasure = {cmsId: m.cmsId, name: m.name, category: m.category};
-    if (! measures.includes(reducedMeasure)) {
+    var reducedMeasure = {cmsId: m.cmsId, name: m.name, category: m.category};
+    if (! uniqueMeasures.map((i) => { return i.cmsId; }).includes(reducedMeasure.cmsId)) {
       uniqueMeasures.push(reducedMeasure);
     }
   });
