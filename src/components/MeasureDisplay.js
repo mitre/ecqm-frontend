@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { fetchMeasuresIfNeeded } from '../actions/index';
 import { connect } from 'react-redux';
 import MeasureCategory from './MeasureCategory';
+import QualityReport from './QualityReport';
 
 class MeasureDisplay extends Component {
   componentDidMount() {
@@ -27,6 +28,9 @@ class MeasureDisplay extends Component {
         <div className="main">
           <div className="main-heading">
             <h1 className="title">Measures</h1>
+            {this.props.qualityReports.map(qr =>
+              <QualityReport qualityReport={qr} measure={this.props.measures.find((m) => {return m.hqmfId === qr.hqmfId;})} />
+            )}
           </div>
         </div>
       </div>
@@ -45,7 +49,7 @@ const mapDispatchToProps = (dispatch) => {
 function flattenMeasures(measures) {
   let uniqueMeasures = [];
   measures.forEach((m) => {
-    var reducedMeasure = {cmsId: m.cmsId, name: m.name, category: m.category};
+    var reducedMeasure = {cmsId: m.cmsId, name: m.name, category: m.category, hqmfId: m.hqmfId};
     if (! uniqueMeasures.map((i) => i.cmsId).includes(reducedMeasure.cmsId)) {
       uniqueMeasures.push(reducedMeasure);
     }
@@ -64,19 +68,22 @@ function flattenCategories(measures) {
 }
 
 const mapStateToProps = (state) => {
-  if (state.measures) {
-    return {
-      isFetching: state.measures.isFetching,
-      measures: flattenMeasures(state.measures.measures),
-      categories: flattenCategories(state.measures.measures)
-    };
+  var props = {};
+  if (state.definitions) {
+    props.isFetching = state.definitions.isFetching;
+    props.measures = flattenMeasures(state.definitions.measures);
+    props.categories = flattenCategories(state.definitions.measures);
   } else {
-    return {
-      isFetching: true,
-      measures: [],
-      categories: []
-    };
+    props.isFetching = true;
+    props.measures = [];
+    props.categories = [];
   }
+  if (state.qualityReports) {
+    props.qualityReports = state.qualityReports;
+  } else {
+    props.qualityReports = [];
+  }
+  return props;
 };
 
 MeasureDisplay.displayName = 'MeasureDisplay';
