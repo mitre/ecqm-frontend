@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
+import { fetchMeasuresIfNeeded } from '../actions/index';
+import { connect } from 'react-redux';
+import MeasureCategory from './MeasureCategory';
 
-export default class MeasureDisplay extends Component {
+class MeasureDisplay extends Component {
+  componentDidMount() {
+    this.props.onFetchMeasures();
+  }
+
   render() {
     return (
       <div>
@@ -10,36 +17,12 @@ export default class MeasureDisplay extends Component {
             <input type="text" value="" className="form-control category-measure-search" placeholder="measure or group title" />
             <span className="input-group-btn"><button type="button" className="btn btn-default clear-search">&times;</button></span>
           </p>
-          <div className="panel-group measure-selectors">
-            <div className="panel panel-default">
-              <div className="toggleable panel-heading" data-toggle="collapse" data-parent=".measure-selectors" data-target="#categoryCore">
-                <h4 className="panel-title">
-                  <div className="selection-pull-out">
-                    <span className="measure-count">0</span>
-                    <i className="panel-chevron glyphicon glyphicon-chevron-right"></i>
-                  </div>
-                  Core
-                </h4>
-              </div>
-              <div id="categoryCore" className="panel-collapse collapse">
-                <div className="panel-body">
-                  <div className="btn-block-container">
-                    <button type="button" className="btn btn-checkbox btn-block all">Select All</button>
-                  </div>
-                  <div className="btn-block-container">
-                    <button type="button" className="btn btn-checkbox btn-block individual">
-                      CMS136v4/0108 - ADHD: Follow-Up Care for Children Prescribed Attention-Deficit/Hyperactivity Disorder (ADHD) Medication
-                    </button>
-                  </div>
-                  <div className="btn-block-container">
-                    <button type="button" className="btn btn-checkbox btn-block individual">
-                      CMS146v3/0002 - Appropriate Testing for Children with Pharyngitis
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {this.props.categories.map(category =>
+            <MeasureCategory
+              category={category}
+              key={category}
+              measures={this.props.measures.filter((m) => {return m.category === category;})} />
+          )}
         </div>
         <div className="main">
           <div className="main-heading">
@@ -50,3 +33,50 @@ export default class MeasureDisplay extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetchMeasures: () => {
+      dispatch(fetchMeasuresIfNeeded());
+    }
+  };
+};
+
+function flattenMeasures(measures) {
+  let uniqueMeasures = [];
+  measures.forEach((m) => {
+    var reducedMeasure = {cmsId: m.cmsId, name: m.name, category: m.category};
+    if (! uniqueMeasures.map((i) => { return i.cmsId; }).includes(reducedMeasure.cmsId)) {
+      uniqueMeasures.push(reducedMeasure);
+    }
+  });
+  return uniqueMeasures;
+}
+
+function flattenCategories(measures) {
+  let categories = [];
+  measures.forEach((m) => {
+    if (! categories.includes(m.category)) {
+      categories.push(m.category);
+    }
+  });
+  return categories.sort();
+}
+
+const mapStateToProps = (state) => {
+  if (state.measures) {
+    return {
+      isFetching: state.measures.isFetching,
+      measures: flattenMeasures(state.measures.measures),
+      categories: flattenCategories(state.measures.measures)
+    };
+  } else {
+    return {
+      isFetching: true,
+      measures: [],
+      categories: []
+    };
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MeasureDisplay);
