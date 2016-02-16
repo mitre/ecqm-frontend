@@ -4,10 +4,6 @@ import { connect } from 'react-redux';
 import MeasureCategory from './MeasureCategory';
 
 class MeasureDisplay extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.onFetchMeasures();
   }
