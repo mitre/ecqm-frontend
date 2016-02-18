@@ -46,6 +46,8 @@ export default class ProviderDisplay extends Component {
   }
 }
 
+ProviderDisplay.displayName = 'ProviderDisplay';
+
 function providerType(provider) {
   let identifier = provider.cda_identifiers && provider.cda_identifiers[0];
   let root = identifier ? identifier.root : null;

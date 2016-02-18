@@ -11,6 +11,8 @@ export default class TeamList extends Component {
         <Link to="/teams/new" className="btn btn-primary pull-right btn-margin">New Team</Link>
         <TeamTable />
       </div>
-    )
+    );
   }
 }
+
+TeamList.displayName = 'TeamList';

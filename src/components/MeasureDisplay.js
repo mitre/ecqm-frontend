@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { fetchMeasuresIfNeeded } from '../actions/index';
 import { connect } from 'react-redux';
 import MeasureCategory from './MeasureCategory';
@@ -21,7 +21,7 @@ class MeasureDisplay extends Component {
             <MeasureCategory
               category={category}
               key={category}
-              measures={this.props.measures.filter((m) => {return m.category === category;})} />
+              measures={this.props.measures.filter((m) => m.category === category)} />
           )}
         </div>
         <div className="main">
@@ -46,7 +46,7 @@ function flattenMeasures(measures) {
   let uniqueMeasures = [];
   measures.forEach((m) => {
     var reducedMeasure = {cmsId: m.cmsId, name: m.name, category: m.category};
-    if (! uniqueMeasures.map((i) => { return i.cmsId; }).includes(reducedMeasure.cmsId)) {
+    if (! uniqueMeasures.map((i) => i.cmsId).includes(reducedMeasure.cmsId)) {
       uniqueMeasures.push(reducedMeasure);
     }
   });
@@ -77,6 +77,14 @@ const mapStateToProps = (state) => {
       categories: []
     };
   }
+};
+
+MeasureDisplay.displayName = 'MeasureDisplay';
+
+MeasureDisplay.propTypes = {
+  categories: PropTypes.array.isRequired,
+  measures: PropTypes.array.isRequired,
+  onFetchMeasures: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeasureDisplay);

@@ -16,7 +16,7 @@ export default function configureStore(initialState) {
       applyMiddleware(thunk, reduxRouterMiddleware, createLogger()),
       DevTools.instrument()
     )
-  )
+  );
 
   // Required for replaying actions from devtools to work
   reduxRouterMiddleware.listenForReplays(store);

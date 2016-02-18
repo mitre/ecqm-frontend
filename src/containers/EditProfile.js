@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import ProfileForm from '../components/ProfileForm';
 
-export default class EditProfile extends Component {
+ export default class EditProfile extends Component {
   render() {
     return (
       <div className="container">
@@ -15,3 +15,5 @@ export default class EditProfile extends Component {
     );
   }
 }
+
+EditProfile.displayName = 'EditProfile';

@@ -11,3 +11,5 @@ export default class ProviderList extends Component {
     );
   }
 }
+
+ProviderList.displayName = 'ProviderList';

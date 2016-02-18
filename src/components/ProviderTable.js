@@ -6,7 +6,7 @@ const providerList = [
   {"id":"5615d1a93f66fa6e03000004","cda_identifiers":[{"_id":"5615d1a93f66fa6e03000006","extension":"123456791","root":"2.16.840.1.113883.4.2"},{"_id":"5615d1a93f66fa6e03000007","extension":"9238429386","root":"2.16.840.1.113883.4.6"}],"family_name":"Doe","given_name":"Jane","level":null,"organization":{"_id":"5615d1a93f66fa6e03000005","name":"General Hospital"},"parent_id":null,"parent_ids":[],"phone":"15555555557","specialty":"200000000X","title":"Dr.","npi":"0123456789","patient_count":0,"children":[],"parent":null}
 ];
 
-export default class Header extends Component {
+export default class ProviderTable extends Component {
   render() {
     return (
       <div>
@@ -52,6 +52,8 @@ export default class Header extends Component {
     );
   }
 }
+
+ProviderTable.displayName = 'ProviderTable';
 
 function providerType(provider) {
   let identifier = provider.cda_identifiers && provider.cda_identifiers[0];
