@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 class MeasureCategory extends Component {
   render() {
@@ -33,5 +33,12 @@ class MeasureCategory extends Component {
     );
   }
 }
+
+MeasureCategory.displayName = 'MeasureCategory';
+
+MeasureCategory.propTypes = {
+  category: PropTypes.string.isRequired,
+  measures: PropTypes.array.isRequired
+};
 
 export default MeasureCategory;

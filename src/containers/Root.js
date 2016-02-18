@@ -14,10 +14,12 @@ export default class Root extends Component {
           <DevTools />
         </div>
       </Provider>
-    )
+    );
   }
 }
 
 Root.propTypes = {
   store: PropTypes.object.isRequired
 };
+
+Root.displayName = 'Root';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 
 export default class TeamTable extends Component {
   render() {
@@ -23,3 +23,5 @@ export default class TeamTable extends Component {
     );
   }
 }
+
+TeamTable.displayName = 'TeamTable';

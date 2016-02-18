@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-export default class ProfileForm extends Component {
+class ProfileForm extends Component {
   render() {
     return (
       <form className="registration">
@@ -82,7 +82,7 @@ export default class ProfileForm extends Component {
               <span className="input-group-addon"><i className="fa fa-lock fa-lg fa-fw"></i></span>
               <input name="newPassword" autoComplete="off" className="form-control" placeholder="password" type="password" />
             </div>
-            <p className="help-block">Leave blank if you don't wish to change.</p>
+            <p className="help-block">Leave blank if you do not wish to change.</p>
           </div>
           {/* TODO: hide this field until a user enters something in the password field */}
             <div className="col-md-6">
@@ -150,3 +150,7 @@ export default class ProfileForm extends Component {
     );
   }
 }
+
+ProfileForm.displayName = "ProfileForm";
+
+export default ProfileForm;

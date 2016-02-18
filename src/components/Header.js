@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-export default class Header extends Component {
+class Header extends Component {
   render() {
     return (
       <nav className="navbar navbar-default">
@@ -42,3 +42,7 @@ export default class Header extends Component {
     );
   }
 }
+
+Header.displayName = 'Header';
+
+export default Header;

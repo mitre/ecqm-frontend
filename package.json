@@ -7,7 +7,7 @@
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
     "start": "gulp",
-    "lint": "eslint src"
+    "lint": "gulp lint"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "bootstrap-sass": "^3.3.6",
     "browserify": "^13.0.0",
     "es6-promise": "^3.0.2",
+    "eslint-plugin-react": "^3.16.1",
     "font-awesome": "^4.5.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",

@@ -4,7 +4,7 @@ import Header from '../components/Header';
 
 export default class App extends Component {
   render() {
-    const { children } = this.props;
+    const { children } = this.props; //eslint-disable-line
     return (
       <div>
         <Header />
@@ -13,3 +13,5 @@ export default class App extends Component {
     );
   }
 }
+
+App.displayName = 'App';

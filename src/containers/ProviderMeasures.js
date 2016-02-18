@@ -11,3 +11,5 @@ export default class ProviderMeasures extends Component {
     );
   }
 }
+
+ProviderMeasures.displayName = 'ProviderMeasures';
