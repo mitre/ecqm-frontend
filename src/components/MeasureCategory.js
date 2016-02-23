@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchQualityReportIfNeeded } from '../actions/index';
+import { selectMeasure } from '../actions/selectedMeasures';
 
 class MeasureCategory extends Component {
   render() {
@@ -22,7 +22,7 @@ class MeasureCategory extends Component {
                 <button type="button" className="btn btn-checkbox btn-block all">Select All</button>
               </div>
               {this.props.measures.map(measure => {
-                var boundAddMeasure = this.addMeasure.bind(this, measure);
+                var boundAddMeasure = this.props.onAddMeasure.bind(this, measure);
                 return (
               <div className="btn-block-container" key={measure.cmsId} onClick={boundAddMeasure}>
                 <button type="button" className="btn btn-checkbox btn-block individual">
@@ -36,24 +36,21 @@ class MeasureCategory extends Component {
       </div>
     );
   }
-
-  addMeasure(hqmfId) {
-    this.props.onAddMeasure(hqmfId);
-  }
 }
 
 MeasureCategory.displayName = 'MeasureCategory';
 
 MeasureCategory.propTypes = {
   category: PropTypes.string.isRequired,
-  measures: PropTypes.array.isRequired
+  measures: PropTypes.array.isRequired,
+  onAddMeasure: PropTypes.func
 };
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onAddMeasure: (measure) => {
-      dispatch(fetchQualityReportIfNeeded(measure));
+      dispatch(selectMeasure(measure));
     }
   };
 };

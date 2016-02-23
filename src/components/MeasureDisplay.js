@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { fetchMeasuresIfNeeded } from '../actions/index';
 import { connect } from 'react-redux';
 import MeasureCategory from './MeasureCategory';
-import QualityReport from './QualityReport';
+import SelectedMeasure from './SelectedMeasure';
 
 class MeasureDisplay extends Component {
   componentDidMount() {
-    this.props.onFetchMeasures();
+    this.props.fetchMeasuresIfNeeded();
   }
 
   render() {
@@ -28,8 +28,8 @@ class MeasureDisplay extends Component {
         <div className="main">
           <div className="main-heading">
             <h1 className="title">Measures</h1>
-            {this.props.qualityReports.map(qr =>
-              <QualityReport qualityReport={qr} measure={this.props.measures.find((m) => {return m.hqmfId === qr.hqmfId;})} />
+            {this.props.selectedMeasures.map(sm =>
+              <SelectedMeasure selectedMeasure={sm} />
             )}
           </div>
         </div>
@@ -38,50 +38,21 @@ class MeasureDisplay extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onFetchMeasures: () => {
-      dispatch(fetchMeasuresIfNeeded());
-    }
-  };
-};
-
-function flattenMeasures(measures) {
-  let uniqueMeasures = [];
-  measures.forEach((m) => {
-    var reducedMeasure = {cmsId: m.cmsId, name: m.name, category: m.category, hqmfId: m.hqmfId};
-    if (! uniqueMeasures.map((i) => i.cmsId).includes(reducedMeasure.cmsId)) {
-      uniqueMeasures.push(reducedMeasure);
-    }
-  });
-  return uniqueMeasures;
-}
-
-function flattenCategories(measures) {
-  let categories = [];
-  measures.forEach((m) => {
-    if (! categories.includes(m.category)) {
-      categories.push(m.category);
-    }
-  });
-  return categories.sort();
-}
-
 const mapStateToProps = (state) => {
   var props = {};
   if (state.definitions) {
     props.isFetching = state.definitions.isFetching;
-    props.measures = flattenMeasures(state.definitions.measures);
-    props.categories = flattenCategories(state.definitions.measures);
+    props.measures = state.definitions.measures;
+    props.categories = state.definitions.categories;
   } else {
     props.isFetching = true;
     props.measures = [];
     props.categories = [];
   }
-  if (state.qualityReports) {
-    props.qualityReports = state.qualityReports;
+  if (state.selectedMeasures) {
+    props.selectedMeasures = state.selectedMeasures;
   } else {
-    props.qualityReports = [];
+    props.selectedMeasures = [];
   }
   return props;
 };
@@ -91,7 +62,8 @@ MeasureDisplay.displayName = 'MeasureDisplay';
 MeasureDisplay.propTypes = {
   categories: PropTypes.array.isRequired,
   measures: PropTypes.array.isRequired,
-  onFetchMeasures: PropTypes.func
+  selectedMeasures: PropTypes.array.isRequired,
+  fetchMeasuresIfNeeded: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MeasureDisplay);
+export default connect(mapStateToProps, { fetchMeasuresIfNeeded })(MeasureDisplay);
