@@ -1,31 +1,69 @@
 import { combineReducers } from 'redux';
 import { routeReducer } from 'react-router-redux';
+import immutable from 'immutable';
+import { flattenMeasures, flattenCategories} from './measures';
 
-import {
-  REQUEST_MEASURES, RECEIVE_MEASURES
-} from '../actions/index';
+import { REQUEST_MEASURES, RECEIVE_MEASURES } from '../actions/index';
+import { SELECT_MEASURE } from '../actions/selectedMeasures';
+import { REQUEST_NEW_QUALITY_REPORT, POLL_QUALITY_REPORT,
+         RECEIVE_QUALITY_REPORT } from '../actions/qualityReports';
 
-function measures(state = {
+
+function definitions(state = {
   isFetching: false,
-  measures: []
+  measures: [], categories: []
 }, action) {
   switch (action.type) {
     case REQUEST_MEASURES:
-      return Object.assign({}, state, {
-        isFetching: true
-      });
+      return {
+        isFetching: true,
+        measures: [],
+        categories: []
+      };
     case RECEIVE_MEASURES:
-      return Object.assign({}, state, {
+      return {
         isFetching: false,
-        measures: action.measures
-      });
+        measures: flattenMeasures(action.payload),
+        categories: flattenCategories(action.payload)
+      };
+    default:
+      return state;
+  }
+}
+
+function qualityReports(state = [], action) {
+  var qrs = immutable.List.of(...state);
+  switch (action.type) {
+    case REQUEST_NEW_QUALITY_REPORT:
+      qrs = qrs.push({measureId: action.measureId,
+                      subId: action.subId,
+                      status: {state: 'Requesting', log: []}});
+      return qrs.toArray();
+    case RECEIVE_QUALITY_REPORT, POLL_QUALITY_REPORT:
+      const existingQrIndex = qrs.find((qr) => qr.measureId === action.payload.measureId
+                                        && qr.subId === action.payload.subId);
+      qrs = qrs.set(existingQrIndex, action.payload);
+      return qrs.toArray();
+    default:
+      return state;
+  }
+}
+
+function selectedMeasures(state = [], action) {
+  switch (action.type) {
+    case SELECT_MEASURE:
+      var sms = immutable.List.of(...state);
+      sms = sms.push(action.measure);
+      return sms.toArray();
     default:
       return state;
   }
 }
 
 const rootReducer = combineReducers({
-  measures: measures,
+  qualityReports,
+  definitions,
+  selectedMeasures,
   routing: routeReducer
 });
 

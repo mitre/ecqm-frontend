@@ -3,31 +3,24 @@ import fetch from 'isomorphic-fetch';
 export const REQUEST_MEASURES = 'REQUEST_MEASURES';
 export const RECEIVE_MEASURES = 'RECEIVE_MEASURES';
 
-function requestMeasures() {
+export function receiveResponse(eventType, json) {
   return {
-    type: REQUEST_MEASURES
+    type: eventType,
+    payload: json
   };
 }
 
-function receiveMeasures(json) {
-  return {
-    type: RECEIVE_MEASURES,
-    measures: json
-  };
-}
-
-function fetchMeasures() {
+function retrieve(event, url) {
   return dispatch => {
-    dispatch(requestMeasures());
-    return fetch(`http://localhost:3001/Measure`)
+    return fetch(url)
       .then(req => req.json())
-      .then(json => dispatch(receiveMeasures(json)));
+      .then(json => dispatch(receiveResponse(event, json)));
   };
 }
 
 function shouldFetchMeasures(state) {
-  const measures = state.measures;
-  if (measures.measures.length === 0 && ! measures.isFetching) {
+  const definitions = state.definitions;
+  if (definitions.measures.length === 0 && ! definitions.isFetching) {
     return true;
   } else {
     return false;
@@ -37,7 +30,8 @@ function shouldFetchMeasures(state) {
 export function fetchMeasuresIfNeeded() {
   return (dispatch, getState) => {
     if (shouldFetchMeasures(getState())) {
-      return dispatch(fetchMeasures());
+      dispatch({type: REQUEST_MEASURES});
+      return dispatch(retrieve(RECEIVE_MEASURES, 'http://localhost:3001/Measure'));
     }
   };
 }
