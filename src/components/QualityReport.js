@@ -7,7 +7,7 @@ export default class QualityReport extends Component {
         <p>{this.submeasureDisplay()}</p>
         {(() => {
           if (this.props.qualityReport.status.state === "completed") {
-            return (<p>Result: {this.props.qualityReport.numerator} / {this.props.qualityReport.denominator}</p>);
+            return (<p>Result: {this.props.qualityReport.result.numerator} / {this.props.qualityReport.result.denominator}</p>);
           } else {
             return (<p>Loading...</p>);
           }
@@ -34,8 +34,10 @@ QualityReport.propTypes = {
     subMeasures: PropTypes.array.isRequired
   }),
   qualityReport: PropTypes.shape({
-    numerator: PropTypes.number,
-    denominator: PropTypes.number,
+    result: PropTypes.shape({
+      numerator: PropTypes.number,
+      denominator: PropTypes.number
+    }),
     subId: PropTypes.string,
     status: PropTypes.shape({
       state: PropTypes.string.isRequired

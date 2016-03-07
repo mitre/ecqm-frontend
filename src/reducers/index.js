@@ -39,11 +39,17 @@ function qualityReports(state = [], action) {
                       subId: action.subId,
                       status: {state: 'Requesting', log: []}});
       return qrs.toArray();
-    case RECEIVE_QUALITY_REPORT, POLL_QUALITY_REPORT:
-      const existingQrIndex = qrs.find((qr) => qr.measureId === action.payload.measureId
-                                        && qr.subId === action.payload.subId);
-      qrs = qrs.set(existingQrIndex, action.payload);
-      return qrs.toArray();
+    case POLL_QUALITY_REPORT:
+    case RECEIVE_QUALITY_REPORT:
+      return qrs.update((origQrs) => {
+        return origQrs.map((qr) => {
+          if (qr.measureId === action.payload.measureId && qr.subId === action.payload.subId) {
+            return action.payload;
+          } else {
+            return qr;
+          }
+        });
+      });
     default:
       return state;
   }
