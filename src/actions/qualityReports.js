@@ -13,7 +13,7 @@ export function findQualityReport(state, hqmfId, subId) {
 
 function pollQualityReport(dispatch, qualityReport) {
   window.setTimeout(() => {
-  fetch(`http://localhost:3001/QualityReport/${qualityReport.id}`)
+  fetch(`/QualityReport/${qualityReport.id}`, {credentials: 'same-origin'})
     .then(res => res.json())
     .then(json => checkQualityReportResponse(dispatch, json));
   }, TWO_SECONDS);
@@ -41,7 +41,7 @@ export function requestNewQualityReport(measure) {
       if (sm.subId) {
         fd.append('subId', sm.subId);
       }
-      fetch('http://localhost:3001/QualityReport', {method: 'post', body: fd})
+      fetch('/QualityReport', {method: 'post', body: fd, credentials: 'same-origin'})
         .then(res => res.json())
         .then(json => {
           checkQualityReportResponse(dispatch, json);

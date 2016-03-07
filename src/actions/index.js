@@ -12,7 +12,7 @@ export function receiveResponse(eventType, json) {
 
 function retrieve(event, url) {
   return dispatch => {
-    return fetch(url)
+    return fetch(url, {credentials: 'same-origin'})
       .then(req => req.json())
       .then(json => dispatch(receiveResponse(event, json)));
   };
@@ -31,7 +31,7 @@ export function fetchMeasuresIfNeeded() {
   return (dispatch, getState) => {
     if (shouldFetchMeasures(getState())) {
       dispatch({type: REQUEST_MEASURES});
-      return dispatch(retrieve(RECEIVE_MEASURES, 'http://localhost:3001/Measure'));
+      return dispatch(retrieve(RECEIVE_MEASURES, '/Measure'));
     }
   };
 }
