@@ -37,7 +37,7 @@ export function requestNewQualityReport(measure) {
       fd.append('measureId', measure.hqmfId);
       // TODO: Remove hard coded effectiveDate and allow it to be updated by the
       // user interface
-      fd.append('effectiveDate', Date.parse("01-Jan-2016 00:00:00")/1000);
+      fd.append('effectiveDate', Date.parse("01-Jan-2015 00:00:00")/1000);
       if (sm.subId) {
         fd.append('subId', sm.subId);
       }
