@@ -3,6 +3,8 @@ import fetch from 'isomorphic-fetch';
 export const REQUEST_MEASURES = 'REQUEST_MEASURES';
 export const RECEIVE_MEASURES = 'RECEIVE_MEASURES';
 
+export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
+
 export function receiveResponse(eventType, json) {
   return {
     type: eventType,
@@ -33,5 +35,11 @@ export function fetchMeasuresIfNeeded() {
       dispatch({type: REQUEST_MEASURES});
       return dispatch(retrieve(RECEIVE_MEASURES, '/Measure'));
     }
+  };
+}
+
+export function fetchUserInfo() {
+  return (dispatch) => {
+    return dispatch(retrieve(RECEIVE_USER_INFO, '/UserInfo'));
   };
 }

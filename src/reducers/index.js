@@ -3,7 +3,7 @@ import { routeReducer } from 'react-router-redux';
 import immutable from 'immutable';
 import { flattenMeasures, flattenCategories} from './measures';
 
-import { REQUEST_MEASURES, RECEIVE_MEASURES } from '../actions/index';
+import { REQUEST_MEASURES, RECEIVE_MEASURES, RECEIVE_USER_INFO } from '../actions/index';
 import { SELECT_MEASURE } from '../actions/selectedMeasures';
 import { REQUEST_NEW_QUALITY_REPORT, POLL_QUALITY_REPORT,
          RECEIVE_QUALITY_REPORT } from '../actions/qualityReports';
@@ -66,10 +66,20 @@ function selectedMeasures(state = [], action) {
   }
 }
 
+function user(state = {}, action) {
+  switch (action.type) {
+    case RECEIVE_USER_INFO:
+      return Object.assign({}, action.payload);
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   qualityReports,
   definitions,
   selectedMeasures,
+  user,
   routing: routeReducer
 });
 
