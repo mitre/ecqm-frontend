@@ -14,7 +14,7 @@
     "url": "https://github.com/mitre/ecqm-frontend.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/mitre/ecqm-frontend/issues"
   },
