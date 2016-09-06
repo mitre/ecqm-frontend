@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { selectMeasure } from '../actions/selectedMeasures';
 
-class MeasureCategory extends Component {
+export default class MeasureCategory extends Component {
   render() {
     return (
       <div className="panel-group measure-selectors">
@@ -45,14 +43,3 @@ MeasureCategory.propTypes = {
   measures: PropTypes.array.isRequired,
   onAddMeasure: PropTypes.func
 };
-
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAddMeasure: (measure) => {
-      dispatch(selectMeasure(measure));
-    }
-  };
-};
-
-export default connect(null, mapDispatchToProps)(MeasureCategory);

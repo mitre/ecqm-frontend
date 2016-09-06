@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { fetchMeasures } from '../actions/index';
+import { selectMeasure } from '../actions/selectedMeasures';
+import { requestNewQualityReport } from '../actions/qualityReports';
 import { connect } from 'react-redux';
 import MeasureCategory from './MeasureCategory';
 import SelectedMeasure from './SelectedMeasure';
@@ -22,15 +24,20 @@ class MeasureDisplay extends Component {
             <MeasureCategory
               category={category}
               key={category}
-              measures={this.props.measures.filter((m) => m.category === category)} />
+              measures={this.props.measures.filter((m) => m.category === category)}
+              onAddMeasure={(measure) => {
+                this.props.selectMeasure(measure);
+                this.props.requestNewQualityReport(measure);
+              }} />
           )}
         </div>
         <div className="main">
           <div className="main-heading">
             <h1 className="title">Measures</h1>
-            {this.props.selectedMeasures.map(sm =>
-              <SelectedMeasure selectedMeasure={sm} />
-            )}
+            {this.props.selectedMeasures.map((sm) => {
+              let qrs = this.props.qualityReports.filter(qr => qr.measureId === sm.hqmfId);
+              return <SelectedMeasure selectedMeasure={sm} qualityReports={qrs} />;
+            })}
           </div>
         </div>
       </div>
@@ -40,20 +47,13 @@ class MeasureDisplay extends Component {
 
 const mapStateToProps = (state) => {
   var props = {};
-  if (state.definitions) {
-    props.isFetching = state.definitions.isFetching;
-    props.measures = state.definitions.measures;
-    props.categories = state.definitions.categories;
-  } else {
-    props.isFetching = true;
-    props.measures = [];
-    props.categories = [];
-  }
-  if (state.selectedMeasures) {
-    props.selectedMeasures = state.selectedMeasures;
-  } else {
-    props.selectedMeasures = [];
-  }
+
+  props.isFetching = state.definitions.isFetching;
+  props.measures = state.definitions.measures;
+  props.categories = state.definitions.categories;
+  props.selectedMeasures = state.selectedMeasures;
+  props.qualityReports = state.qualityReports;
+
   return props;
 };
 
@@ -61,9 +61,12 @@ MeasureDisplay.displayName = 'MeasureDisplay';
 
 MeasureDisplay.propTypes = {
   categories: PropTypes.array.isRequired,
+  qualityReports: PropTypes.array.isRequired,
   measures: PropTypes.array.isRequired,
   selectedMeasures: PropTypes.array.isRequired,
-  fetchMeasures: PropTypes.func
+  fetchMeasures: PropTypes.func,
+  selectMeasure: PropTypes.func,
+  requestNewQualityReport: PropTypes.func
 };
 
-export default connect(mapStateToProps, { fetchMeasures })(MeasureDisplay);
+export default connect(mapStateToProps, { fetchMeasures, selectMeasure, requestNewQualityReport })(MeasureDisplay);
