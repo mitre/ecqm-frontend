@@ -44,7 +44,7 @@ function qualityReports(state = [], action) {
             return qr;
           }
         });
-      });
+      }).toArray();
     default:
       return state;
   }
