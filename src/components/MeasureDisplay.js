@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { fetchMeasuresIfNeeded } from '../actions/index';
+import { fetchMeasures } from '../actions/index';
 import { connect } from 'react-redux';
 import MeasureCategory from './MeasureCategory';
 import SelectedMeasure from './SelectedMeasure';
 
 class MeasureDisplay extends Component {
   componentDidMount() {
-    this.props.fetchMeasuresIfNeeded();
+    this.props.fetchMeasures();
   }
 
   render() {
@@ -63,7 +63,7 @@ MeasureDisplay.propTypes = {
   categories: PropTypes.array.isRequired,
   measures: PropTypes.array.isRequired,
   selectedMeasures: PropTypes.array.isRequired,
-  fetchMeasuresIfNeeded: PropTypes.func
+  fetchMeasures: PropTypes.func
 };
 
-export default connect(mapStateToProps, { fetchMeasuresIfNeeded })(MeasureDisplay);
+export default connect(mapStateToProps, { fetchMeasures })(MeasureDisplay);
