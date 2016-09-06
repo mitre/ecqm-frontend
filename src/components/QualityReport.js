@@ -1,4 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+
+import qualityReportProps from '../prop-types/quality_report';
+import measureProps from '../prop-types/measure';
 
 export default class QualityReport extends Component {
   render() {
@@ -29,18 +32,6 @@ export default class QualityReport extends Component {
 QualityReport.displayName = 'QualityReport';
 
 QualityReport.propTypes = {
-  measure: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    subMeasures: PropTypes.array.isRequired
-  }),
-  qualityReport: PropTypes.shape({
-    result: PropTypes.shape({
-      numerator: PropTypes.number,
-      denominator: PropTypes.number
-    }),
-    subId: PropTypes.string,
-    status: PropTypes.shape({
-      state: PropTypes.string.isRequired
-    })
-  })
+  measure: measureProps.isRequired,
+  qualityReport: qualityReportProps.isRequired
 };

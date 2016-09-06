@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import measureProps from '../prop-types/measure';
+
 export default class MeasureCategory extends Component {
   render() {
     return (
@@ -40,6 +42,6 @@ MeasureCategory.displayName = 'MeasureCategory';
 
 MeasureCategory.propTypes = {
   category: PropTypes.string.isRequired,
-  measures: PropTypes.array.isRequired,
+  measures: PropTypes.arrayOf(measureProps).isRequired,
   onAddMeasure: PropTypes.func
 };

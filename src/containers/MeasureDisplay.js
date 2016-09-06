@@ -1,10 +1,15 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+
 import { fetchMeasures } from '../actions/index';
 import { selectMeasure } from '../actions/selectedMeasures';
 import { requestNewQualityReport } from '../actions/qualityReports';
-import { connect } from 'react-redux';
+
 import MeasureCategory from '../components/MeasureCategory';
 import SelectedMeasure from '../components/SelectedMeasure';
+
+import measureProps from '../prop-types/measure';
+import qualityReportProps from '../prop-types/quality_report';
 
 class MeasureDisplay extends Component {
   componentDidMount() {
@@ -36,7 +41,7 @@ class MeasureDisplay extends Component {
             <h1 className="title">Measures</h1>
             {this.props.selectedMeasures.map((sm) => {
               let qrs = this.props.qualityReports.filter(qr => qr.measureId === sm.hqmfId);
-              return <SelectedMeasure selectedMeasure={sm} qualityReports={qrs} />;
+              return <SelectedMeasure selectedMeasure={sm} qualityReports={qrs} key={sm.hqmfId} />;
             })}
           </div>
         </div>
@@ -60,10 +65,10 @@ const mapStateToProps = (state) => {
 MeasureDisplay.displayName = 'MeasureDisplay';
 
 MeasureDisplay.propTypes = {
-  categories: PropTypes.array.isRequired,
-  qualityReports: PropTypes.array.isRequired,
-  measures: PropTypes.array.isRequired,
-  selectedMeasures: PropTypes.array.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
+  qualityReports: PropTypes.arrayOf(qualityReportProps).isRequired,
+  measures: PropTypes.arrayOf(measureProps).isRequired,
+  selectedMeasures: PropTypes.arrayOf(measureProps).isRequired,
   fetchMeasures: PropTypes.func,
   selectMeasure: PropTypes.func,
   requestNewQualityReport: PropTypes.func
