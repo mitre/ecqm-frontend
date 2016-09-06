@@ -1,45 +1,29 @@
 import fetch from 'isomorphic-fetch';
 
-export const REQUEST_MEASURES = 'REQUEST_MEASURES';
-export const RECEIVE_MEASURES = 'RECEIVE_MEASURES';
+import {
+  REQUEST_MEASURES,
+  REQUEST_USER_INFO
+} from './types';
 
-export const RECEIVE_USER_INFO = 'RECEIVE_USER_INFO';
-
-export function receiveResponse(eventType, json) {
-  return {
-    type: eventType,
-    payload: json
-  };
-}
-
-function retrieve(event, url) {
-  return dispatch => {
-    return fetch(url, {credentials: 'same-origin'})
+export function retrieve(url, context=null) {
+  return new Promise((resolve) =>
+    fetch(url, {credentials: 'same-origin'})
       .then(req => req.json())
-      .then(json => dispatch(receiveResponse(event, json)));
-  };
+      .then(json => {
+        if (context) {
+          return resolve([json, context]);
+        } else {
+          return resolve(json);
+        }
+       }));
 }
 
-function shouldFetchMeasures(state) {
-  const definitions = state.definitions;
-  if (definitions.measures.length === 0 && ! definitions.isFetching) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-export function fetchMeasuresIfNeeded() {
-  return (dispatch, getState) => {
-    if (shouldFetchMeasures(getState())) {
-      dispatch({type: REQUEST_MEASURES});
-      return dispatch(retrieve(RECEIVE_MEASURES, '/Measure'));
-    }
-  };
+export function fetchMeasures() {
+  return {type: REQUEST_MEASURES,
+          payload: retrieve("/Measure")};
 }
 
 export function fetchUserInfo() {
-  return (dispatch) => {
-    return dispatch(retrieve(RECEIVE_USER_INFO, '/UserInfo'));
-  };
+  return {type: REQUEST_USER_INFO,
+          payload: retrieve('/UserInfo')};
 }

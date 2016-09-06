@@ -3,24 +3,18 @@ import { routeReducer } from 'react-router-redux';
 import immutable from 'immutable';
 import { flattenMeasures, flattenCategories} from './measures';
 
-import { REQUEST_MEASURES, RECEIVE_MEASURES, RECEIVE_USER_INFO } from '../actions/index';
-import { SELECT_MEASURE } from '../actions/selectedMeasures';
-import { REQUEST_NEW_QUALITY_REPORT, POLL_QUALITY_REPORT,
-         RECEIVE_QUALITY_REPORT } from '../actions/qualityReports';
+import {
+  REQUEST_MEASURES_FULFILLED,
+  REQUEST_USER_INFO_FULFILLED,
+  SELECT_MEASURE,
+  REQUEST_NEW_QUALITY_REPORT,
+  POST_NEW_QUALITY_REPORT_FULFILLED
+} from '../actions/types';
 
-
-function definitions(state = {
-  isFetching: false,
-  measures: [], categories: []
-}, action) {
+function definitions(state = {isFetching: false, measures: [], categories: []},
+                     action) {
   switch (action.type) {
-    case REQUEST_MEASURES:
-      return {
-        isFetching: true,
-        measures: [],
-        categories: []
-      };
-    case RECEIVE_MEASURES:
+    case REQUEST_MEASURES_FULFILLED:
       return {
         isFetching: false,
         measures: flattenMeasures(action.payload),
@@ -35,12 +29,13 @@ function qualityReports(state = [], action) {
   var qrs = immutable.List.of(...state);
   switch (action.type) {
     case REQUEST_NEW_QUALITY_REPORT:
-      qrs = qrs.push({measureId: action.measureId,
-                      subId: action.subId,
-                      status: {state: 'Requesting', log: []}});
+      action.measure.subMeasures.forEach((sm) => {
+        qrs = qrs.push({measureId: action.measure.hqmfId,
+                        subId: sm.subId,
+                        status: {state: 'Requesting', log: []}});
+      });
       return qrs.toArray();
-    case POLL_QUALITY_REPORT:
-    case RECEIVE_QUALITY_REPORT:
+    case POST_NEW_QUALITY_REPORT_FULFILLED:
       return qrs.update((origQrs) => {
         return origQrs.map((qr) => {
           if (qr.measureId === action.payload.measureId && qr.subId === action.payload.subId) {
@@ -68,7 +63,7 @@ function selectedMeasures(state = [], action) {
 
 function user(state = {}, action) {
   switch (action.type) {
-    case RECEIVE_USER_INFO:
+    case REQUEST_USER_INFO_FULFILLED:
       return Object.assign({}, action.payload);
     default:
       return state;

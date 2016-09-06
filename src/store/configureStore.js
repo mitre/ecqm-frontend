@@ -1,25 +1,21 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import { syncHistory } from 'react-router-redux';
-import { browserHistory } from 'react-router';
 import DevTools from '../containers/DevTools';
-import thunk from 'redux-thunk';
+import promiseMiddleware from 'redux-promise-middleware';
 import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
-
-const reduxRouterMiddleware = syncHistory(browserHistory);
+import checkQualityReportResponse from '../middlewares/check_qr_response';
+import postNewQualityReportRequests from '../middlewares/post_new_quality_reports';
 
 export default function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
     compose(
-      applyMiddleware(thunk, reduxRouterMiddleware, createLogger()),
+      applyMiddleware(promiseMiddleware(), createLogger(), 
+        checkQualityReportResponse, postNewQualityReportRequests),
       DevTools.instrument()
     )
   );
-
-  // Required for replaying actions from devtools to work
-  reduxRouterMiddleware.listenForReplays(store);
 
   return store;
 }
