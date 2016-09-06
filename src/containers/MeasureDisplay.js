@@ -3,8 +3,8 @@ import { fetchMeasures } from '../actions/index';
 import { selectMeasure } from '../actions/selectedMeasures';
 import { requestNewQualityReport } from '../actions/qualityReports';
 import { connect } from 'react-redux';
-import MeasureCategory from './MeasureCategory';
-import SelectedMeasure from './SelectedMeasure';
+import MeasureCategory from '../components/MeasureCategory';
+import SelectedMeasure from '../components/SelectedMeasure';
 
 class MeasureDisplay extends Component {
   componentDidMount() {

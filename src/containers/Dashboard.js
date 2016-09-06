@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import MeasureDisplay from '../components/MeasureDisplay';
+import MeasureDisplay from './MeasureDisplay';
 import Stats from '../components/Stats';
 
 export default class Dashboard extends Component {
