@@ -44,13 +44,25 @@
     }
 
     .submeasure-expander {
-      @extend .pull-right;
+      float: right !important;
       color: $brand-primary;
       margin: 0 0 3px 3px;
     }
 
     .measure-title {
-      @extend .panel-title;
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: ceil(($font-size-base * 1.125));
+      color: inherit;
+
+      > a,
+      > small,
+      > .small,
+      > small > a,
+      > .small > a {
+        color: inherit;
+      }
+
       color: inherit;
       display: inline-block;
       font-weight: 500;

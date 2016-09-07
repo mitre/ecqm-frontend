@@ -1,7 +1,10 @@
 // 3rd party resources
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+
+// 3rd party resources
 @import "variables";
 @import "bootstrap3";
-@import "node_modules/font-awesome/scss/font-awesome";
 
 // Styles by page
 @import "login";
