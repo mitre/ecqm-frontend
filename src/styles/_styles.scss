@@ -126,7 +126,8 @@ body {
 }
 
 .measure {
-  @extend .row;
+  @include make-row;
+
   .measure-title-id {
     // .make-xs-column(3);
     @include make-xs-column(5, 0); // use gutter of 0, to eliminate left gutter
@@ -137,8 +138,50 @@ body {
     @include make-xs-column(2);
   }
   .patient-btn {
-    @extend .btn;
-    @extend .btn-default;
+    display: inline-block;
+    margin-bottom: 0; // For input.btn
+    font-weight: $btn-font-weight;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+    border: 1px solid transparent;
+    white-space: nowrap;
+    @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $btn-border-radius-base);
+    @include user-select(none);
+
+    &,
+    &:active,
+    &.active {
+      &:focus,
+      &.focus {
+        @include tab-focus;
+      }
+    }
+
+    &:hover,
+    &:focus,
+    &.focus {
+      color: $btn-default-color;
+      text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+      outline: 0;
+      background-image: none;
+      @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+    }
+
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+      cursor: $cursor-disabled;
+      @include opacity(.65);
+      @include box-shadow(none);
+    }
+    @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
   }
 }
 
@@ -213,7 +256,7 @@ body {
     margin-top: 0;
   }
   .category-percent .title-circle, .category-time .title-circle {
-    @extend .center-block;
+    @include center-block;
     border-radius: $title-circle-radius;
     @include square($title-circle-radius * 2);
     background-color: $circle-bkg-color;
@@ -242,10 +285,59 @@ body {
 }
 
 .selection-pull-out {
-  @extend .pull-right;
+  float: right !important;
   margin: 0 0 3px 3px;
   .measure-count {
-    @extend .badge;
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: $font-size-small;
+    font-weight: $badge-font-weight;
+    color: $badge-color;
+    line-height: $badge-line-height;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    background-color: $badge-bg;
+    border-radius: $badge-border-radius;
+
+    // Empty badges collapse automatically (not available in IE8)
+    &:empty {
+      display: none;
+    }
+
+    // Quick fix for badges in buttons
+    .btn & {
+      position: relative;
+      top: -1px;
+    }
+
+    .btn-xs &,
+    .btn-group-xs > .btn & {
+      top: 0;
+      padding: 1px 5px;
+    }
+
+    // [converter] extracted a& to a.badge
+
+    // Account for badges in navs
+    .list-group-item.active > &,
+    .nav-pills > .active > a > & {
+      color: $badge-active-color;
+      background-color: $badge-active-bg;
+    }
+
+    .list-group-item > & {
+      float: right;
+    }
+
+    .list-group-item > & + & {
+      margin-right: 5px;
+    }
+
+    .nav-pills > li > a > & {
+      margin-left: 3px;
+    }
   }
   i {
     vertical-align: top;
@@ -256,7 +348,7 @@ body {
   @include make-row(0);
   position: relative;
   .measure-identifier {
-    @extend .pull-left;
+    float: left !important;
     background-color: $gray-lighter;
     min-width: 44px;
     padding: 35px 4px;
@@ -362,17 +454,60 @@ body {
 // TODO Clean up these styles once pages are integrated and complete.
 
 .population-btn {
-  @extend .btn;
-  @extend .btn-default;
-  @extend .btn-block;
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  font-weight: $btn-font-weight;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $btn-border-radius-base);
+  @include user-select(none);
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      @include tab-focus;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: $btn-default-color;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: $cursor-disabled;
+    @include opacity(.65);
+    @include box-shadow(none);
+  }
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+  display: block;
+  width: 100%;
   padding: $padding-base-vertical $padding-base-horizontal;
   .query-result {
-    @extend .pull-right;
+    float: right !important;
     font-size: 1.15em;
     font-weight: bold;
   }
   .title {
-    @extend .pull-left;
+    float: left !important;
   }
   &.active {
     @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
@@ -426,7 +561,7 @@ $table-border-color: white;
     padding: 2px;
     border-radius: 10px;
     .icon-border {
-      @extend .pull-left;
+      float: left !important;
       border: 2px solid #4b979d;
       border-radius: $title-circle-radius;
       color: $brand-primary;
@@ -495,4 +630,3 @@ $table-border-color: white;
   padding-top: 20px;
 
 }
-
