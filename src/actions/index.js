@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
 
 import {
   REQUEST_MEASURES,
@@ -7,13 +7,12 @@ import {
 
 export function retrieve(url, context=null) {
   return new Promise((resolve) =>
-    fetch(url, {credentials: 'same-origin'})
-      .then(req => req.json())
-      .then(json => {
+    axios.get(url, {withCredentials: true})
+      .then(response => {
         if (context) {
-          return resolve([json, context]);
+          return resolve([response.data, context]);
         } else {
-          return resolve(json);
+          return resolve(response.data);
         }
        }));
 }
