@@ -7,9 +7,12 @@ import qualityReportProps from '../prop-types/quality_report';
 export default class SelectedMeasure extends Component {
   render() {
     return (
-    <div>
-      <p>Measure: {this.props.selectedMeasure.name}</p>
-      {this.props.qualityReports.map((qr) => {
+    <div className="panel panel-default">
+      <div className="panel-heading">
+        <h3 className="panel-title">{this.props.selectedMeasure.name}</h3>
+      </div>
+      <div className="panel-body">
+      {this.props.qualityReports.map((qr, index) => {
         let key;
         if (qr.id) {
           key = qr.id;
@@ -19,8 +22,9 @@ export default class SelectedMeasure extends Component {
             key += qr.subId;
           }
         }
-        return <QualityReport qualityReport={qr} measure={this.props.selectedMeasure} key={key} />;
+        return <QualityReport qualityReport={qr} index={index} measure={this.props.selectedMeasure} key={key} />;
       })}
+      </div>
     </div>
     );
   }
