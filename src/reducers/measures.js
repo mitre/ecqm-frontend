@@ -8,6 +8,8 @@ export function flattenMeasures(measures) {
     } else {
       var newMeasure = {cmsId: m.cmsId, name: m.name, category: m.category,
                         hqmfId: m.hqmfId, description: m.description,
+                        continuousVariable: m.continuousVariable,
+                        episodeOfCare: m.episodeOfCare,
                         subMeasures: []};
       newMeasure.subMeasures.push({subId: m.subId, subtitle: m.subtitle,
                                         shortSubtitle: m.shortSubtitle});
