@@ -6,6 +6,8 @@ const measureProps = {
   description: PropTypes.string.isRequired,
   hqmfId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  continuousVariable: PropTypes.bool,
+  episodeOfCare: PropTypes.bool,
   subMeasures: PropTypes.arrayOf(PropTypes.shape({
     shortSubtitle: PropTypes.string,
     subtitle: PropTypes.string,
