@@ -8,7 +8,7 @@ describe('QualityReport', () => {
     props = {
       index: 0,
       measure: {subMeasures: [{subId: 'a', subtitle: '18-24'}, {subId: 'b', subtitle: '25-30'}],
-                category: 'Core', cmsId: "999v3", description: 'A fake measure'},
+                hqmfId: '1234', name: 'Fake', category: 'Core', cmsId: "999v3", description: 'A fake measure'},
       qualityReport: {subId: 'a', status: {state: "completed"}, measureId: '1234',
                       result: {initialPatientPopulation: 5, numerator: 2, denominator: 3}}
     };
@@ -36,5 +36,11 @@ describe('QualityReport', () => {
     let component = renderComponent(QualityReport, props);
     expect(component.find("tbody tr td").first()).to.have.text('Numerator');
     expect(component.find("tbody tr td:nth-child(2)").first()).to.have.text('2');
+  });
+
+  it('will not display an icon if it is not the first row', () => {
+    props.index = 1;
+    let component = renderComponent(QualityReport, props);
+        expect(component.find(".fa")).to.not.exist;
   });
 });
