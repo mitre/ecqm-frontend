@@ -11,6 +11,7 @@ export default class PatientList extends Component {
             <th>First</th>
             <th>Last</th>
             <th>Gender</th>
+            <th>FHIR Record</th>
           </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@ export default class PatientList extends Component {
               <td>{p.first}</td>
               <td>{p.last}</td>
               <td>{p.gender}</td>
+              <td><a href={`/Patient/${p.patientId}`}>{p.patientId}</a></td>
             </tr>
           );
         })}

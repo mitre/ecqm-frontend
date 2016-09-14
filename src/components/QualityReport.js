@@ -39,8 +39,8 @@ export default class QualityReport extends Component {
         this.props.qualityReport.result.denominator > 0 &&
         this.props.measure.continuousVariable === false) {
 
-      let outliers = this.props.qualityReport.result.initialPatientPopulation - this.props.qualityReport.result.numerator;
-                    //- this.props.qualityReport.result.exclusion - this.props.qualityReport.result.exception;
+      let outliers = this.props.qualityReport.result.denominator - this.props.qualityReport.result.numerator
+                    - this.props.qualityReport.result.exclusion - this.props.qualityReport.result.exception;
       let data = [{x: "Numerator", y: this.props.qualityReport.result.numerator},
                   {x: "Outliers", y: outliers }];
       let colorScale = ["#3B858C", "#EFEFEF"];

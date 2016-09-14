@@ -25,7 +25,7 @@ export function populations(state = {}, action) {
           qrProps[action.payload[1].population] = [{page: pageNumber, patients: response.patients}];
         }
       }
-
+      
       pops = pops.set(action.payload[1].qualityReportId, qrProps);
 
       return pops.toObject();

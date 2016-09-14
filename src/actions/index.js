@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import {
   REQUEST_MEASURES,
-  REQUEST_USER_INFO
+  REQUEST_USER_INFO,
+  REQUEST_PATIENT_COUNT
 } from './types';
 
 export function retrieve(url, context=null) {
@@ -25,4 +26,9 @@ export function fetchMeasures() {
 export function fetchUserInfo() {
   return {type: REQUEST_USER_INFO,
           payload: retrieve('/UserInfo')};
+}
+
+export function fetchPatientCount() {
+  return {type: REQUEST_PATIENT_COUNT,
+          payload: retrieve("/Patient")};
 }

@@ -21,7 +21,7 @@ class Populations extends Component {
   render() {
     return (
       <div className="container">
-        <Stats patientCount={100} />
+        <Stats patientCount={this.props.patientCount} />
         <div className="row">
           <h1>{this.props.measure.name}</h1>
           <div className="panel panel-default">
@@ -60,6 +60,7 @@ class Populations extends Component {
 Populations.displayName = 'Populations';
 
 Populations.propTypes = {
+  patientCount: PropTypes.number,
   measure: measureProps,
   qualityReport: qualityReportProps,
   params: PropTypes.shape({
@@ -74,6 +75,7 @@ Populations.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   var props = {};
+  props.patientCount = state.patientCount;
   props.qualityReport = state.qualityReports.find((qr) => qr.id === ownProps.params.qualityReportId);
   const pops = ['initialPatientPopulation', 'numerator', 'denominator', 'outlier'];
   pops.forEach((pop) => props[pop] = []);

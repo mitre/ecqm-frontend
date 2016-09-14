@@ -8,8 +8,8 @@ export default class Stats extends Component {
           <h5 className="effective-date-header">
             <b>Reporting Period:</b> 2014
           </h5>
+          <h2>Number of Patients: {this.props.patientCount}</h2>
         </div>
-        <h2># of Patients: {this.props.patientCount}</h2>
       </div>
     );
   }

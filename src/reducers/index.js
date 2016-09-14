@@ -10,6 +10,7 @@ import {
   SELECT_MEASURE,
   REQUEST_NEW_QUALITY_REPORT,
   POST_NEW_QUALITY_REPORT_FULFILLED,
+  REQUEST_PATIENT_COUNT_FULFILLED
 } from '../actions/types';
 
 function definitions(state = {isFetching: false, measures: [], categories: []},
@@ -71,12 +72,22 @@ function user(state = {}, action) {
   }
 }
 
+function patientCount(state = 0, action) {
+  switch (action.type) {
+    case REQUEST_PATIENT_COUNT_FULFILLED:
+      return action.payload.total;
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   qualityReports,
   definitions,
   selectedMeasures,
   user,
   populations,
+  patientCount,
   routing: routeReducer
 });
 
