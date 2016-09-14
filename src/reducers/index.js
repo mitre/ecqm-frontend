@@ -2,13 +2,14 @@ import { combineReducers } from 'redux';
 import { routeReducer } from 'react-router-redux';
 import immutable from 'immutable';
 import { flattenMeasures, flattenCategories} from './measures';
+import { populations } from './populations';
 
 import {
   REQUEST_MEASURES_FULFILLED,
   REQUEST_USER_INFO_FULFILLED,
   SELECT_MEASURE,
   REQUEST_NEW_QUALITY_REPORT,
-  POST_NEW_QUALITY_REPORT_FULFILLED
+  POST_NEW_QUALITY_REPORT_FULFILLED,
 } from '../actions/types';
 
 function definitions(state = {isFetching: false, measures: [], categories: []},
@@ -75,6 +76,7 @@ const rootReducer = combineReducers({
   definitions,
   selectedMeasures,
   user,
+  populations,
   routing: routeReducer
 });
 

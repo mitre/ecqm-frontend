@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 import { VictoryPie } from 'victory';
 
@@ -123,10 +124,10 @@ export default class QualityReport extends Component {
 
   submeasureDisplay() {
     if (this.props.measure.subMeasures.length == 1) {
-      return "";
+      return <Link to={`/Populations/${this.props.qualityReport.id}`}>Populations</Link>;
     } else {
       var sub = this.props.measure.subMeasures.find((sm) => sm.subId === this.props.qualityReport.subId);
-      return sub.subtitle;
+      return <Link to={`/Populations/${this.props.qualityReport.id}`}>{sub.subtitle}</Link>;
     }
   }
 }
