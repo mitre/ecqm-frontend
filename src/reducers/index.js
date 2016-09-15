@@ -2,13 +2,16 @@ import { combineReducers } from 'redux';
 import { routeReducer } from 'react-router-redux';
 import immutable from 'immutable';
 import { flattenMeasures, flattenCategories} from './measures';
+import { populations } from './populations';
 
 import {
   REQUEST_MEASURES_FULFILLED,
   REQUEST_USER_INFO_FULFILLED,
   SELECT_MEASURE,
   REQUEST_NEW_QUALITY_REPORT,
-  POST_NEW_QUALITY_REPORT_FULFILLED
+  POST_NEW_QUALITY_REPORT_FULFILLED,
+  REQUEST_PATIENT_COUNT_FULFILLED,
+  REQUEST_QUALITY_REPORT_FULFILLED
 } from '../actions/types';
 
 function definitions(state = {isFetching: false, measures: [], categories: []},
@@ -34,6 +37,9 @@ function qualityReports(state = [], action) {
                         subId: sm.subId,
                         status: {state: 'Requesting', log: []}});
       });
+      return qrs.toArray();
+    case REQUEST_QUALITY_REPORT_FULFILLED:
+      qrs = qrs.push(action.payload);
       return qrs.toArray();
     case POST_NEW_QUALITY_REPORT_FULFILLED:
       return qrs.update((origQrs) => {
@@ -70,11 +76,22 @@ function user(state = {}, action) {
   }
 }
 
+function patientCount(state = 0, action) {
+  switch (action.type) {
+    case REQUEST_PATIENT_COUNT_FULFILLED:
+      return action.payload.total;
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   qualityReports,
   definitions,
   selectedMeasures,
   user,
+  populations,
+  patientCount,
   routing: routeReducer
 });
 

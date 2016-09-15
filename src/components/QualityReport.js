@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 import { VictoryPie } from 'victory';
 
@@ -38,8 +39,8 @@ export default class QualityReport extends Component {
         this.props.qualityReport.result.denominator > 0 &&
         this.props.measure.continuousVariable === false) {
 
-      let outliers = this.props.qualityReport.result.initialPatientPopulation - this.props.qualityReport.result.numerator;
-                    //- this.props.qualityReport.result.exclusion - this.props.qualityReport.result.exception;
+      let outliers = this.props.qualityReport.result.denominator - this.props.qualityReport.result.numerator
+                    - this.props.qualityReport.result.exclusion - this.props.qualityReport.result.exception;
       let data = [{x: "Numerator", y: this.props.qualityReport.result.numerator},
                   {x: "Outliers", y: outliers }];
       let colorScale = ["#3B858C", "#EFEFEF"];
@@ -123,10 +124,10 @@ export default class QualityReport extends Component {
 
   submeasureDisplay() {
     if (this.props.measure.subMeasures.length == 1) {
-      return "";
+      return <Link to={`/Populations/${this.props.qualityReport.id}`}>Populations</Link>;
     } else {
       var sub = this.props.measure.subMeasures.find((sm) => sm.subId === this.props.qualityReport.subId);
-      return sub.subtitle;
+      return <Link to={`/Populations/${this.props.qualityReport.id}`}>{sub.subtitle}</Link>;
     }
   }
 }
