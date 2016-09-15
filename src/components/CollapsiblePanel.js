@@ -9,7 +9,7 @@ export default class CollapsiblePanel extends Component {
     super(...args);
 
     this.state = {
-      open: true,
+      open: false,
       chevronToggle: false
     };
   }
