@@ -1,0 +1,26 @@
+@import "../elements/variables";
+
+.header {
+  .navbar-header {
+    margin: 20px;
+
+    .logo {
+      text-decoration: none;
+
+      .logo-title {
+        margin-left: 10px;
+        font-size: 20px;
+        font-weight: 200;
+        color: $brand-primary;
+      }
+    }
+  }
+
+  .nav {
+    margin: 10px;
+
+    a {
+      color: $brand-primary;
+    }
+  }
+}

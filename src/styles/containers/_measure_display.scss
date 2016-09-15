@@ -1,0 +1,28 @@
+@import "../elements/variables";
+
+.measure-display {
+  .measure-display-filters {
+    .measure-display-search {
+      margin: 10px 0;
+
+      .measure-display-search-input {
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .measure-display-search-button button {
+        height: 34px;
+        border-radius: 0;
+        @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+        text-align: left;
+        text-transform: none;
+        white-space: normal;
+        padding: $padding-base-vertical $padding-base-horizontal;
+
+        &.active {
+          @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+        }
+      }
+    }
+  }
+}

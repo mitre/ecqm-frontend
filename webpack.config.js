@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var WriteFilePlugin = require('write-file-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var autoprefixer = require('autoprefixer');
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -23,17 +24,19 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel' },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/[name].[ext]' },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=assets/[name].[ext]' },
-      { test: /\.scss$/, loaders: ['style', 'css', 'sass'] }
+      { test: /\.css$/, loaders: ['style', 'css', 'postcss'] },
+      { test: /\.scss$/, loaders: ['style', 'css', 'postcss', 'sass'] }
     ]
   },
+
+  postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ],
 
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),
     new CopyWebpackPlugin([
-      { from: 'src/images', to: 'assets/images' },
-      { from: 'src/fonts', to: 'assets/fonts' }
+      { from: 'public' }
     ]),
     new WriteFilePlugin(),
     new HtmlWebpackPlugin({

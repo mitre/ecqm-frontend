@@ -1,0 +1,14 @@
+@import "../elements/variables";
+
+.stats {
+  font-size: 18px;
+
+  .stats-header {
+    text-align: right;
+  }
+
+  .stats-data {
+    color: $brand-primary;
+    font-weight: bold;
+  }
+}
