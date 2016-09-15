@@ -6,7 +6,7 @@ import Stats from '../components/Stats';
 
 import { fetchPatientCount } from '../actions';
 
-export default class Dashboard extends Component {
+export class Dashboard extends Component {
   componentWillMount() {
     this.props.fetchPatientCount();
   }

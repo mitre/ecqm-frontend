@@ -4,14 +4,23 @@ import { connect } from 'react-redux';
 import qualityReportProps from '../prop-types/quality_report';
 import measureProps from '../prop-types/measure';
 import patientProps from '../prop-types/patient';
+import { fetchMeasures, fetchPatientCount } from '../actions/index';
 
-import { requestPopulation } from '../actions/qualityReports';
+import { requestPopulation, requestQualityReport } from '../actions/qualityReports';
 
 import Stats from '../components/Stats';
 import PatientList from '../components/PatientList';
 
 class Populations extends Component {
   componentWillMount() {
+    if(this.props.qualityReport === undefined) {
+      // Someone came directly to this component. So we need to rehydrate the
+      // store with all of the basic information
+      this.props.fetchMeasures();
+      this.props.fetchPatientCount();
+      this.props.requestQualityReport(this.props.params.qualityReportId);
+    }
+
     this.props.requestPopulation(this.props.params.qualityReportId, "initialPatientPopulation");
     this.props.requestPopulation(this.props.params.qualityReportId, "numerator");
     this.props.requestPopulation(this.props.params.qualityReportId, "denominator");
@@ -70,17 +79,20 @@ Populations.propTypes = {
   numerator: PropTypes.arrayOf(patientProps),
   denominator: PropTypes.arrayOf(patientProps),
   outlier: PropTypes.arrayOf(patientProps),
-  requestPopulation: PropTypes.func
+  requestPopulation: PropTypes.func,
+  fetchMeasures: PropTypes.func,
+  requestQualityReport: PropTypes.func,
+  fetchPatientCount: PropTypes.func
 };
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
   var props = {};
   props.patientCount = state.patientCount;
   props.qualityReport = state.qualityReports.find((qr) => qr.id === ownProps.params.qualityReportId);
   const pops = ['initialPatientPopulation', 'numerator', 'denominator', 'outlier'];
   pops.forEach((pop) => props[pop] = []);
   let qrPopulations = state.populations[ownProps.params.qualityReportId];
-  if (qrPopulations) {
+  if (qrPopulations && state.definitions.measures.length > 0 && props.qualityReport) {
     pops.forEach((pop) => {
       let qrPop = qrPopulations[pop];
       if (qrPop) {
@@ -90,9 +102,14 @@ const mapStateToProps = (state, ownProps) => {
         }
       }
     });
+    props.measure = state.definitions.measures.find((m) => m.hqmfId === props.qualityReport.measureId);
+  } else {
+    props.measure = {name: 'Loading', description: 'Loading',
+      category: 'Loading', hqmfId: 'Loading', cmsId: 'Loading'};
   }
-  props.measure = state.definitions.measures.find((m) => m.hqmfId === props.qualityReport.measureId);
+
   return props;
 };
 
-export default connect(mapStateToProps, { requestPopulation })(Populations);
+export default connect(mapStateToProps, { requestPopulation, fetchMeasures,
+                        requestQualityReport, fetchPatientCount })(Populations);

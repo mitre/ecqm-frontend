@@ -1,6 +1,7 @@
 import {
   REQUEST_NEW_QUALITY_REPORT,
-  REQUEST_POPULATION
+  REQUEST_POPULATION,
+  REQUEST_QUALITY_REPORT
 } from './types';
 
 import { retrieve } from './index';
@@ -13,6 +14,11 @@ export function findQualityReport(state, hqmfId, subId) {
 export function requestNewQualityReport(measure) {
   return {type: REQUEST_NEW_QUALITY_REPORT,
           measure: measure};
+}
+
+export function requestQualityReport(qualityReportId) {
+  return {type: REQUEST_QUALITY_REPORT,
+          payload: retrieve(`/QualityReport/${qualityReportId}`)};
 }
 
 export function requestPopulation(qualityReportId, population, offset=0) {
