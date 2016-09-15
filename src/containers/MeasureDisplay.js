@@ -19,7 +19,7 @@ class MeasureDisplay extends Component {
   render() {
     return (
       <div>
-        <div className="sidebar">
+        <div className="col-xs-3">
           <h3>Filters</h3>
           <p className="input-group">
             <input type="text" value="" className="form-control category-measure-search" placeholder="measure or group title" />
