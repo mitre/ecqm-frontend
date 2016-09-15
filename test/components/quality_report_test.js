@@ -17,10 +17,10 @@ describe('QualityReport', () => {
 
   it('will display the proper measure subtitle', () => {
     let component = renderComponent(QualityReport, props);
-    expect(component.find(".col-md-1").first()).to.have.text('18-24');
+    expect(component.find(".col-md-2").first()).to.have.text('18-24');
     props.qualityReport.subId = 'b';
     component = renderComponent(QualityReport, props);
-    expect(component.find(".col-md-1").first()).to.have.text('25-30');
+    expect(component.find(".col-md-2").first()).to.have.text('25-30');
   });
 
   it('will display the proper measure icon', () => {
