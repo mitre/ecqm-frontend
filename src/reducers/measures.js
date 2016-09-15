@@ -22,7 +22,7 @@ export function flattenMeasures(measures) {
 export function flattenCategories(measures) {
   let categories = [];
   measures.forEach((m) => {
-    if (! categories.includes(m.category)) {
+    if (categories.indexOf(m.category) === -1) {
       categories.push(m.category);
     }
   });
