@@ -1,14 +1,47 @@
-// 3rd party resources
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+/* ------------------------- IMPORT VARIABLES ------------------------------ */
 
-// 3rd party resources
-@import "variables";
-@import "bootstrap3";
+@import "elements/variables";
 
-// Styles by page
+/* ------------------------- IMPORT 3RD PARTY VENDORS ---------------------- */
+
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+/* ------------------------- IMPORT CUSTOM FONTS --------------------------- */
+
+@import "vendors/bootstrap3";
+
+/* ------------------------- IMPORT CUSTOM SCSS ---------------------------- */
+
 @import "login";
 @import "patient";
 @import "register";
 @import "styles";
 @import "vis";
+
+/* ------------------------- DOM ------------------------------------------- */
+
+html {
+  position: relative;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  padding-bottom: 2em;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 4.8em;
+  font-weight: 100;
+}
+
+h2 {
+  font-size: 2.2em;
+}
+
+ul {
+  text-decoration: none;
+}

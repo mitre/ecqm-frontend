@@ -14,7 +14,8 @@ class Header extends Component {
         <div className="container">
           <div className="navbar-header col-lg-4">
             <Link className="logo" to="/">
-              <img alt="logo small trans" src="/assets/images/logo-3x.png" width="100" />
+              <img alt="logo-image" src="assets/images/ecqm-engine-logo.png" width="30" />
+              <span className="logo-title">eCQM Engine</span>
             </Link>
           </div>
           <div className="collapse navbar-collapse in">
