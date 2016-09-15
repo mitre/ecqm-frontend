@@ -9,11 +9,11 @@ import measureProps from '../prop-types/measure';
 export default class QualityReport extends Component {
   render() {
     return (
-      <div className="row">
+      <div className="quality-report row">
         <div className="col-md-3">{this.props.index === 0 ? this.props.measure.description : ""}</div>
-        <div className="col-md-1">{this.submeasureDisplay()}</div>
+        <div className="col-md-2">{this.submeasureDisplay()}</div>
         <div className="col-md-1">{this.measureIcon()}</div>
-        <div className="col-md-4">{this.resultsTable()}</div>
+        <div className="col-md-3">{this.resultsTable()}</div>
         <div className="col-md-3">{this.resultsDoughnut()}</div>
       </div>
     );

@@ -1,0 +1,35 @@
+@import "../elements/variables";
+
+.measure-category {
+  .measure-category-item {
+    font-size: 13px;
+    display: block;
+    cursor: pointer;
+    border-radius: 0;
+    padding: 10px;
+    border: 1px solid lighten($brand-secondary, 60%);
+
+    &:nth-child(odd) {
+      background-color: lighten($brand-secondary, 60%);
+    }
+
+    &:hover,
+    &:active {
+      background-color: $brand-primary;
+      border: 1px solid $brand-primary;
+      color: $color-white;
+    }
+
+    .measure-category-item-all {
+
+    }
+
+    .measure-category-item-id {
+      font-weight: bold;
+    }
+
+    .measure-category-item-name {
+
+    }
+  }
+}

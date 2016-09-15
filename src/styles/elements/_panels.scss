@@ -8,7 +8,7 @@
   box-shadow: none;
 
   .panel-heading {
-    background-color: $brand-primary;
+    background-color: $brand-secondary;
     border-radius: 0;
     color: $color-white;
     height: 48px;
@@ -16,7 +16,7 @@
     padding: 0;
 
     .panel-title {
-      font-size: 16px;
+      font-size: 13px;
       font-weight: normal;
     }
 
@@ -35,7 +35,7 @@
   }
 
   .panel-body {
-    border-left: 10px solid $brand-primary;
+    border-left: 10px solid $brand-secondary;
     margin: 0;
     padding: 0;
   }

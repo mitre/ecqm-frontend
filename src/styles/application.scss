@@ -13,6 +13,11 @@
 
 /* ------------------------- IMPORT CUSTOM SCSS ---------------------------- */
 
+@import "components/header";
+@import "components/measure_category";
+@import "components/selected_measure";
+@import "components/stats";
+@import "containers/measure_display";
 @import "elements/panels";
 @import "patient";
 @import "styles";
@@ -49,9 +54,11 @@ h2 {
 }
 
 h3 {
-  font-weight: 100;
+  font-weight: 200;
   font-size: 1.8em;
   text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 10px 0;
 }
 
 h4 {

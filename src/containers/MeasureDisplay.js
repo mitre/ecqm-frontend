@@ -18,13 +18,20 @@ class MeasureDisplay extends Component {
 
   render() {
     return (
-      <div>
-        <div className="col-xs-3">
+      <div className="measure-display">
+        <div className="measure-display-filters col-xs-3">
           <h3>Filters</h3>
-          <p className="input-group">
-            <input type="text" value="" className="form-control category-measure-search" placeholder="measure or group title" />
-            <span className="input-group-btn"><button type="button" className="btn btn-default clear-search">&times;</button></span>
-          </p>
+
+          {/*<div className="measure-display-search input-group">
+            <input type="text"
+                   value=""
+                   className="form-control measure-display-search-input"
+                    placeholder="measure or group title" />
+                <span className="input-group-btn measure-display-search-button">
+              <button type="button" className="btn btn-default clear-search">&times;</button>
+            </span>
+          </div>*/}
+
           {this.props.categories.map(category =>
             <MeasureCategory
               category={category}
@@ -36,10 +43,12 @@ class MeasureDisplay extends Component {
               }} />
           )}
         </div>
-        <div className="main">
+
+        <div className="main col-xs-9">
           <div className="main-heading">
-            <h1 className="title">Measures</h1>
+            <h3 className="title">Measures</h3>
           </div>
+
           {this.props.selectedMeasures.map((sm) => {
             let qrs = this.props.qualityReports.filter(qr => qr.measureId === sm.hqmfId);
             return <SelectedMeasure selectedMeasure={sm} qualityReports={qrs} key={sm.hqmfId} />;

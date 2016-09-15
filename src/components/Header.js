@@ -10,7 +10,7 @@ class Header extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-default">
+      <nav className="header navbar navbar-default">
         <div className="container">
           <div className="navbar-header col-lg-4">
             <Link className="logo" to="/">
@@ -18,12 +18,14 @@ class Header extends Component {
               <span className="logo-title">eCQM Engine</span>
             </Link>
           </div>
+
           <div className="collapse navbar-collapse in">
-            <ul className="nav navbar-nav pull-left" style={{marginTop: "10px"}}>
+            {/*<ul className="nav navbar-nav pull-left" style={{marginTop: "10px"}}>
               <li className="location">
                 General Hospital
               </li>
-            </ul>
+            </ul>*/}
+
             <ul className="nav pull-right">
               <li className="divider-vertical"></li>
               <li className="profile">
