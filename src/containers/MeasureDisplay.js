@@ -39,11 +39,11 @@ class MeasureDisplay extends Component {
         <div className="main">
           <div className="main-heading">
             <h1 className="title">Measures</h1>
-            {this.props.selectedMeasures.map((sm) => {
-              let qrs = this.props.qualityReports.filter(qr => qr.measureId === sm.hqmfId);
-              return <SelectedMeasure selectedMeasure={sm} qualityReports={qrs} key={sm.hqmfId} />;
-            })}
           </div>
+          {this.props.selectedMeasures.map((sm) => {
+            let qrs = this.props.qualityReports.filter(qr => qr.measureId === sm.hqmfId);
+            return <SelectedMeasure selectedMeasure={sm} qualityReports={qrs} key={sm.hqmfId} />;
+          })}
         </div>
       </div>
     );

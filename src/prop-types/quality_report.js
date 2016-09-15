@@ -10,7 +10,9 @@ const qualityReportProps = {
     denominator: PropTypes.number,
     exception: PropTypes.number,
     exclusion: PropTypes.number,
-    initialPatientPopulation: PropTypes.number
+    initialPatientPopulation: PropTypes.number,
+    measurePopulation: PropTypes.number,
+    observation: PropTypes.number
   }),
   status: PropTypes.shape({
     state: PropTypes.string.isRequired
