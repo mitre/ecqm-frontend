@@ -13,7 +13,6 @@ export function populations(state = {}, action) {
       let qrProps = {};
       let response = action.payload[0];
       if (! pops.has(action.payload[1].qualityReportId)) {
-        qrProps.total = response.total;
         qrProps[action.payload[1].population] = [{page: 0, patients: response.patients}];
       } else {
         qrProps = pops.get(action.payload[1].qualityReportId);
@@ -25,7 +24,8 @@ export function populations(state = {}, action) {
           qrProps[action.payload[1].population] = [{page: pageNumber, patients: response.patients}];
         }
       }
-      
+      qrProps[action.payload[1].population + 'Total'] = response.total;
+
       pops = pops.set(action.payload[1].qualityReportId, qrProps);
 
       return pops.toObject();

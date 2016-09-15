@@ -49,20 +49,31 @@ class Populations extends Component {
           <div className="tab-content">
             <div role="tabpanel" className="tab-pane active" id="ipp">
               <PatientList patients={this.props.initialPatientPopulation} />
+              {this.overflowDisplay('initialPatientPopulation')}
             </div>
             <div role="tabpanel" className="tab-pane" id="numer">
               <PatientList patients={this.props.numerator} />
+              {this.overflowDisplay('numerator')}
             </div>
             <div role="tabpanel" className="tab-pane" id="denom">
               <PatientList patients={this.props.denominator} />
+              {this.overflowDisplay('denominator')}
             </div>
             <div role="tabpanel" className="tab-pane" id="outlier">
               <PatientList patients={this.props.outlier} />
+              {this.overflowDisplay('outlier')}
             </div>
           </div>
         </div>
       </div>
     );
+  }
+
+  overflowDisplay(population) {
+    const populationCount = this.props[population + 'Total'];
+    if (populationCount > 20) {
+      return <p>... and {populationCount - 20} more.</p>;
+    }
   }
 }
 
@@ -79,6 +90,10 @@ Populations.propTypes = {
   numerator: PropTypes.arrayOf(patientProps),
   denominator: PropTypes.arrayOf(patientProps),
   outlier: PropTypes.arrayOf(patientProps),
+  initialPatientPopulationTotal: PropTypes.number,
+  numeratorTotal: PropTypes.number,
+  denominatorTotal: PropTypes.number,
+  outlierTotal: PropTypes.number,
   requestPopulation: PropTypes.func,
   fetchMeasures: PropTypes.func,
   requestQualityReport: PropTypes.func,
@@ -90,7 +105,12 @@ export const mapStateToProps = (state, ownProps) => {
   props.patientCount = state.patientCount;
   props.qualityReport = state.qualityReports.find((qr) => qr.id === ownProps.params.qualityReportId);
   const pops = ['initialPatientPopulation', 'numerator', 'denominator', 'outlier'];
-  pops.forEach((pop) => props[pop] = []);
+  pops.forEach((pop) => {
+    props[pop] = [];
+    if (state.populations[ownProps.params.qualityReportId]) {
+      props[pop + 'Total'] = state.populations[ownProps.params.qualityReportId][pop + 'Total'];
+    }
+  });
   let qrPopulations = state.populations[ownProps.params.qualityReportId];
   if (qrPopulations && state.definitions.measures.length > 0 && props.qualityReport) {
     pops.forEach((pop) => {
