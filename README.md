@@ -1,6 +1,14 @@
 # ecqm-frontend [![Build Status](https://api.travis-ci.org/mitre/ecqm-frontend.svg)](https://travis-ci.org/mitre/ecqm-frontend)
 
-Web application to provide an interface for clinical quality measure calculation
+Web application to provide an interface for clinical quality measure calculation.
+This is a [React](https://facebook.github.io/react/)
+and [Redux](http://redux.js.org/) based front end for the services provided by
+the [ecqm Server](https://github.com/mitre/ecqm).
+
+## Installation
+
+You can find [install instructions for Ubuntu](https://github.com/mitre/ecqm-frontend/wiki/Ubuntu-16.04.1-Installation)
+on our wiki.
 
 ## License
 
