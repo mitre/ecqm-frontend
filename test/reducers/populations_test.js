@@ -15,7 +15,7 @@ describe('Populations reducer', () => {
 
     const pops = populations({}, action);
 
-    expect(pops['1234']['initialPatientPopulation'][0].page).to.equal(0);
+    expect(pops['1234']['initialPatientPopulation'][0].page).to.equal(1);
     expect(pops['1234']['initialPatientPopulation'][0].patients[0].first).to.equal('Andy');
 
   });
@@ -26,11 +26,11 @@ describe('Populations reducer', () => {
       {qualityReportId: '1234', population: 'denominator'}
     ]};
 
-    const state = {'1234': {total: 30, initialPatientPopulation: [{page: 0, patients: [{first: "Andy"}]}]}};
+    const state = {'1234': {total: 30, initialPatientPopulation: [{page: 1, patients: [{first: "Andy"}]}]}};
     const pops = populations(state, action);
-    expect(pops['1234']['initialPatientPopulation'][0].page).to.equal(0);
+    expect(pops['1234']['initialPatientPopulation'][0].page).to.equal(1);
     expect(pops['1234']['initialPatientPopulation'][0].patients[0].first).to.equal('Andy');
-    expect(pops['1234']['denominator'][0].page).to.equal(0);
+    expect(pops['1234']['denominator'][0].page).to.equal(1);
     expect(pops['1234']['denominator'][0].patients[0].first).to.equal('Fred');
   });
 });
