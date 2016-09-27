@@ -8,10 +8,23 @@ import { fetchMeasures, fetchPatientCount } from '../actions/index';
 
 import { requestPopulation, requestQualityReport } from '../actions/qualityReports';
 
+import Pagination from 'react-js-pagination';
+
 import Stats from '../components/Stats';
 import PatientList from '../components/PatientList';
 
 class Populations extends Component {
+  constructor(...args) {
+    super(...args);
+
+    this.state = {
+      initialPatientPopulationPage: 1,
+      denominatorPage: 1,
+      numeratorPage: 1,
+      outlierPage: 1
+    };
+  }
+
   componentWillMount() {
     if(this.props.qualityReport === undefined) {
       // Someone came directly to this component. So we need to rehydrate the
@@ -48,20 +61,20 @@ class Populations extends Component {
 
           <div className="tab-content">
             <div role="tabpanel" className="tab-pane active" id="ipp">
-              <PatientList patients={this.props.initialPatientPopulation} />
-              {this.overflowDisplay('initialPatientPopulation')}
+              <PatientList patients={this.getPage('initialPatientPopulation')} />
+              {this.paginationDisplay('initialPatientPopulation')}
             </div>
             <div role="tabpanel" className="tab-pane" id="numer">
-              <PatientList patients={this.props.numerator} />
-              {this.overflowDisplay('numerator')}
+              <PatientList patients={this.getPage('numerator')} />
+              {this.paginationDisplay('numerator')}
             </div>
             <div role="tabpanel" className="tab-pane" id="denom">
-              <PatientList patients={this.props.denominator} />
-              {this.overflowDisplay('denominator')}
+              <PatientList patients={this.getPage('denominator')} />
+              {this.paginationDisplay('denominator')}
             </div>
             <div role="tabpanel" className="tab-pane" id="outlier">
-              <PatientList patients={this.props.outlier} />
-              {this.overflowDisplay('outlier')}
+              <PatientList patients={this.getPage('outlier')} />
+              {this.paginationDisplay('outlier')}
             </div>
           </div>
         </div>
@@ -69,10 +82,32 @@ class Populations extends Component {
     );
   }
 
-  overflowDisplay(population) {
+  getPage(population) {
+    const populationPages = this.props[population];
+    const page = populationPages.find((pp) => pp.page === this.state[population + 'Page']);
+    let patients = [];
+    if (page) {
+      patients = page.patients;
+    }
+    return patients;
+  }
+
+  requestNewPage(population) {
+    return (pageNumber) => {
+      let newState = {};
+      newState[`${population}Page`] = pageNumber;
+      const offset = (pageNumber - 1) * 20;
+      this.props.requestPopulation(this.props.params.qualityReportId, population, offset);
+      this.setState(newState);
+    };
+  }
+
+  paginationDisplay(population) {
     const populationCount = this.props[population + 'Total'];
     if (populationCount > 20) {
-      return <p>... and {populationCount - 20} more.</p>;
+      return <Pagination activePage={this.state[population + 'Page']} itemsCountPerPage={20}
+          totalItemsCount={populationCount}
+          pageRangeDisplayed={5} onChange={this.requestNewPage(population)}/>;
     }
   }
 }
@@ -86,10 +121,22 @@ Populations.propTypes = {
   params: PropTypes.shape({
     qualityReportId: PropTypes.string
   }),
-  initialPatientPopulation: PropTypes.arrayOf(patientProps),
-  numerator: PropTypes.arrayOf(patientProps),
-  denominator: PropTypes.arrayOf(patientProps),
-  outlier: PropTypes.arrayOf(patientProps),
+  initialPatientPopulation: PropTypes.arrayOf(PropTypes.shape({
+    page: PropTypes.number,
+    patients: PropTypes.arrayOf(patientProps)
+  })),
+  numerator: PropTypes.arrayOf(PropTypes.shape({
+    page: PropTypes.number,
+    patients: PropTypes.arrayOf(patientProps)
+  })),
+  denominator: PropTypes.arrayOf(PropTypes.shape({
+    page: PropTypes.number,
+    patients: PropTypes.arrayOf(patientProps)
+  })),
+  outlier: PropTypes.arrayOf(PropTypes.shape({
+    page: PropTypes.number,
+    patients: PropTypes.arrayOf(patientProps)
+  })),
   initialPatientPopulationTotal: PropTypes.number,
   numeratorTotal: PropTypes.number,
   denominatorTotal: PropTypes.number,
@@ -114,13 +161,7 @@ export const mapStateToProps = (state, ownProps) => {
   let qrPopulations = state.populations[ownProps.params.qualityReportId];
   if (qrPopulations && state.definitions.measures.length > 0 && props.qualityReport) {
     pops.forEach((pop) => {
-      let qrPop = qrPopulations[pop];
-      if (qrPop) {
-        let page = qrPop.find((p) => p.page === 0);
-        if (page) {
-          props[pop] = page.patients;
-        }
-      }
+      props[pop] = qrPopulations[pop];
     });
     props.measure = state.definitions.measures.find((m) => m.hqmfId === props.qualityReport.measureId);
   } else {

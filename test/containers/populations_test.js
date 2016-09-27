@@ -24,7 +24,7 @@ describe('Populations mapStateToProps', () => {
       populations: {1234: {initialPatientPopulation: [
         {page: 0, patients: [{first: 'Fake Name'}]}
       ]}}, definitions: {measures: [{hqmfId: '5678', name: 'Fake Measure'}]}}, {params: {qualityReportId: '1234'}});
-    expect(props.initialPatientPopulation[0].first).to.eql("Fake Name");
+    expect(props.initialPatientPopulation[0].patients[0].first).to.eql("Fake Name");
   });
 
 });
