@@ -14,9 +14,10 @@
     }
 
     &:hover,
-    &:active {
+    &.active {
       background-color: $brand-primary;
       border: 1px solid $brand-primary;
+      border-bottom-color: $color-white;
       color: $color-white;
     }
 

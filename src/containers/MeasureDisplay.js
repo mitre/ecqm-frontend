@@ -37,6 +37,7 @@ class MeasureDisplay extends Component {
               category={category}
               key={category}
               measures={this.props.measures.filter((m) => m.category === category)}
+              selectedMeasures={this.props.selectedMeasures}
               onAddMeasure={(measure) => {
                 this.props.selectMeasure(measure);
                 this.props.requestNewQualityReport(measure);
