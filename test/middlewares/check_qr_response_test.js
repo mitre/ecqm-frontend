@@ -1,10 +1,10 @@
 import { expect } from '../test_helper';
+import MockStore from '../mock_store';
+import checkQualityReportResponse from '../../src/middlewares/check_qr_response';
 import {
   POST_NEW_QUALITY_REPORT_FULFILLED,
   POST_NEW_QUALITY_REPORT
 } from '../../src/actions/types';
-import checkQualityReportResponse from '../../src/middlewares/check_qr_response';
-import MockStore from '../mock_store';
 
 describe('checkQualityReportResponse middleware', () => {
   let store;
@@ -14,10 +14,15 @@ describe('checkQualityReportResponse middleware', () => {
   });
 
   it('will poll when measure calculation has not yet completed', (done) => {
-    const action = {type: POST_NEW_QUALITY_REPORT_FULFILLED, payload: {status: {state: "requested"}}};
+    const action = {
+      type: POST_NEW_QUALITY_REPORT_FULFILLED,
+      payload: { status: { state: "requested" } }
+    };
+
     const next = () => {
       1 + 1; //do nothing
     };
+
     checkQualityReportResponse(100)(store)(next)(action);
     setTimeout(() => {
       let action = store.dispatchedActions.find((a) => a.type === POST_NEW_QUALITY_REPORT);

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { fetchMeasures } from '../actions/index';
-import { selectMeasure } from '../actions/selectedMeasures';
-import { requestNewQualityReport } from '../actions/qualityReports';
+import { fetchMeasures, selectMeasure, unselectMeasure } from '../actions/measure';
+import { fetchNewQualityReport } from '../actions/quality_report';
 
 import MeasureCategory from '../components/MeasureCategory';
 import SelectedMeasure from '../components/SelectedMeasure';
@@ -12,7 +12,7 @@ import measureProps from '../prop-types/measure';
 import qualityReportProps from '../prop-types/quality_report';
 
 class MeasureDisplay extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchMeasures();
   }
 
@@ -37,10 +37,11 @@ class MeasureDisplay extends Component {
               category={category}
               key={category}
               measures={this.props.measures.filter((m) => m.category === category)}
-              onAddMeasure={(measure) => {
-                this.props.selectMeasure(measure);
-                this.props.requestNewQualityReport(measure);
-              }} />
+              qualityReports={this.props.qualityReports}
+              selectedMeasures={this.props.selectedMeasures.filter((sm) => sm.category === category)}
+              selectMeasure={this.props.selectMeasure}
+              unselectMeasure={this.props.unselectMeasure}
+              fetchNewQualityReport={this.props.fetchNewQualityReport} />
           )}
         </div>
 
@@ -49,9 +50,14 @@ class MeasureDisplay extends Component {
             <h3 className="title">Measures</h3>
           </div>
 
-          {this.props.selectedMeasures.map((sm) => {
-            let qrs = this.props.qualityReports.filter(qr => qr.measureId === sm.hqmfId);
-            return <SelectedMeasure selectedMeasure={sm} qualityReports={qrs} key={sm.hqmfId} />;
+          {this.props.selectedMeasures.map((selectedMeasure) => {
+            let qrs = this.props.qualityReports.filter(qr => qr.measureId === selectedMeasure.hqmfId);
+
+            return (
+              <SelectedMeasure key={selectedMeasure.hqmfId}
+                               selectedMeasure={selectedMeasure}
+                               qualityReports={qrs} />
+            );
           })}
         </div>
       </div>
@@ -59,28 +65,35 @@ class MeasureDisplay extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  var props = {};
-
-  props.isFetching = state.definitions.isFetching;
-  props.measures = state.definitions.measures;
-  props.categories = state.definitions.categories;
-  props.selectedMeasures = state.selectedMeasures;
-  props.qualityReports = state.qualityReports;
-
-  return props;
-};
-
 MeasureDisplay.displayName = 'MeasureDisplay';
 
 MeasureDisplay.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
-  qualityReports: PropTypes.arrayOf(qualityReportProps).isRequired,
   measures: PropTypes.arrayOf(measureProps).isRequired,
+  categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectedMeasures: PropTypes.arrayOf(measureProps).isRequired,
-  fetchMeasures: PropTypes.func,
-  selectMeasure: PropTypes.func,
-  requestNewQualityReport: PropTypes.func
+  qualityReports: PropTypes.arrayOf(qualityReportProps).isRequired,
+  fetchMeasures: PropTypes.func.isRequired,
+  selectMeasure: PropTypes.func.isRequired,
+  unselectMeasure: PropTypes.func.isRequired,
+  fetchNewQualityReport: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, { fetchMeasures, selectMeasure, requestNewQualityReport })(MeasureDisplay);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchMeasures,
+    selectMeasure,
+    unselectMeasure,
+    fetchNewQualityReport
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    measures: state.measure.measures,
+    categories: state.measure.categories,
+    selectedMeasures: state.measure.selectedMeasures,
+    qualityReports: state.qualityReport.qualityReports
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MeasureDisplay);

@@ -44,23 +44,29 @@ export default class QualityReport extends Component {
       let data = [{x: "Numerator", y: this.props.qualityReport.result.numerator},
                   {x: "Outliers", y: outliers }];
       let colorScale = ["#3B858C", "#EFEFEF"];
+
       if (this.props.qualityReport.result.exclusion > 0) {
         data.push({x: "Exclusions", y: this.props.qualityReport.result.exclusion});
         colorScale.push("#C1C1C1");
       }
+
       if (this.props.qualityReport.result.exception > 0) {
         data.push({x: "Exceptions", y: this.props.qualityReport.result.exception});
         colorScale.push("#C1C1C1");
       }
-      return <VictoryPie data={data} colorScale={colorScale} innerRadius={110}
-      style={{
-        labels: {
-          fill: "black",
-          fontSize: 20,
-          fontWeight: "bold",
-          padding: 0
-        }
-    }}/>;
+
+      return (
+        <VictoryPie data={data} colorScale={colorScale} innerRadius={110}
+          style={{
+            labels: {
+              fill: "black",
+              fontSize: 20,
+              fontWeight: "bold",
+              padding: 0
+            }
+          }}
+        />
+      );
     } else {
       return "";
     }
@@ -126,7 +132,7 @@ export default class QualityReport extends Component {
     if (this.props.measure.subMeasures.length == 1) {
       return <Link to={`/Populations/${this.props.qualityReport.id}`}>Populations</Link>;
     } else {
-      var sub = this.props.measure.subMeasures.find((sm) => sm.subId === this.props.qualityReport.subId);
+      let sub = this.props.measure.subMeasures.find((sm) => sm.subId === this.props.qualityReport.subId);
       return <Link to={`/Populations/${this.props.qualityReport.id}`}>{sub.subtitle}</Link>;
     }
   }

@@ -1,10 +1,9 @@
-import {retrieve} from '../actions';
+import { retrieve } from '../actions';
 
 import {
   POST_NEW_QUALITY_REPORT_FULFILLED,
   POST_NEW_QUALITY_REPORT
 } from '../actions/types';
-
 
 const checkQualityReportResponse = timeout => store => next => action => {
   if (action.type === POST_NEW_QUALITY_REPORT_FULFILLED) {
@@ -12,7 +11,10 @@ const checkQualityReportResponse = timeout => store => next => action => {
       return next(action);
     } else {
       setTimeout(() => {
-        store.dispatch({type: POST_NEW_QUALITY_REPORT, payload: retrieve(`/QualityReport/${action.payload.id}`)});
+        store.dispatch({
+          type: POST_NEW_QUALITY_REPORT,
+          payload: retrieve(`/QualityReport/${action.payload.id}`)
+        });
       }, timeout);
     }
   } else {

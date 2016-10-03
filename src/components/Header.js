@@ -1,13 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import { fetchUserInfo } from '../actions/index';
-import { connect } from 'react-redux';
 
-class Header extends Component {
-  componentDidMount() {
-    this.props.fetchUserInfo();
-  }
-
+export default class Header extends Component {
   render() {
     return (
       <nav className="header navbar navbar-default">
@@ -52,21 +46,8 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  var props = {};
-  if (state.user) {
-    props.name = state.user.name;
-  } else {
-    props.name = "Unknown";
-  }
-  return props;
-};
-
-Header.propTypes = {
-  name: PropTypes.string,
-  fetchUserInfo: PropTypes.func
-};
-
 Header.displayName = 'Header';
 
-export default connect(mapStateToProps, { fetchUserInfo })(Header);
+Header.propTypes = {
+  name: PropTypes.string
+};
