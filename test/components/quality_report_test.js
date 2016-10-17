@@ -1,22 +1,26 @@
 import { renderComponent, expect } from '../test_helper';
+import { measureTestObject3, qualityReportTestObject1 } from '../test_props';
 import QualityReport from '../../src/components/QualityReport';
 
 describe('QualityReport', () => {
   let props;
+  let component;
 
   beforeEach(() => {
     props = {
       index: 0,
-      measure: {subMeasures: [{subId: 'a', subtitle: '18-24'}, {subId: 'b', subtitle: '25-30'}],
-                hqmfId: '1234', name: 'Fake', category: 'Core', cmsId: "999v3", description: 'A fake measure'},
-      qualityReport: {subId: 'a', status: {state: "completed"}, measureId: '1234',
-                      result: {initialPatientPopulation: 5, numerator: 2, denominator: 3}}
+      measure: measureTestObject3,
+      qualityReport: qualityReportTestObject1
     };
 
+    component = renderComponent(QualityReport, props);
+  });
+
+  it('has the correct class', () => {
+    expect(component).to.have.class('quality-report');
   });
 
   it('will display the proper measure subtitle', () => {
-    let component = renderComponent(QualityReport, props);
     expect(component.find(".col-md-2").first()).to.have.text('18-24');
     props.qualityReport.subId = 'b';
     component = renderComponent(QualityReport, props);
@@ -24,7 +28,6 @@ describe('QualityReport', () => {
   });
 
   it('will display the proper measure icon', () => {
-    let component = renderComponent(QualityReport, props);
     expect(component.find(".fa-user")).to.exist;
     expect(component.find(".fa-stethoscope")).to.not.exist;
     props.measure.episodeOfCare = true;
@@ -33,7 +36,6 @@ describe('QualityReport', () => {
   });
 
   it('will display a table of results', () => {
-    let component = renderComponent(QualityReport, props);
     expect(component.find("tbody tr td").first()).to.have.text('Numerator');
     expect(component.find("tbody tr td:nth-child(2)").first()).to.have.text('2');
   });

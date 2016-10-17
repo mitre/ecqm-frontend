@@ -1,48 +1,69 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import _ from 'lodash';
 
 import qualityReportProps from '../prop-types/quality_report';
 import measureProps from '../prop-types/measure';
-import patientProps from '../prop-types/patient';
-import { fetchMeasures, fetchPatientCount } from '../actions/index';
+import populationProps from '../prop-types/population';
 
-import { requestPopulation, requestQualityReport } from '../actions/qualityReports';
-
-import Pagination from 'react-js-pagination';
+import { fetchMeasures } from '../actions/measure';
+import { fetchPatientCount } from '../actions/patient';
+import { fetchInitialPatientPopulation, fetchNumeratorPopulation,
+         fetchDenominatorPopulation, fetchOutlierPopulation } from '../actions/population';
+import { fetchQualityReport } from '../actions/quality_report';
 
 import Stats from '../components/Stats';
 import PatientList from '../components/PatientList';
 
 class Populations extends Component {
-  constructor(...args) {
-    super(...args);
-
-    this.state = {
-      initialPatientPopulationPage: 1,
-      denominatorPage: 1,
-      numeratorPage: 1,
-      outlierPage: 1
-    };
-  }
-
   componentWillMount() {
     if(this.props.qualityReport === undefined) {
       // Someone came directly to this component. So we need to rehydrate the
-      // store with all of the basic information
+      // store with all of the basic information.
       this.props.fetchMeasures();
       this.props.fetchPatientCount();
-      this.props.requestQualityReport(this.props.params.qualityReportId);
+      this.props.fetchQualityReport(this.props.params.qualityReportId);
     }
 
-    this.props.requestPopulation(this.props.params.qualityReportId, "initialPatientPopulation");
-    this.props.requestPopulation(this.props.params.qualityReportId, "numerator");
-    this.props.requestPopulation(this.props.params.qualityReportId, "denominator");
-    this.props.requestPopulation(this.props.params.qualityReportId, "outlier");
+    this.props.fetchInitialPatientPopulation(this.props.params.qualityReportId);
+    this.props.fetchNumeratorPopulation(this.props.params.qualityReportId);
+    this.props.fetchDenominatorPopulation(this.props.params.qualityReportId);
+    this.props.fetchOutlierPopulation(this.props.params.qualityReportId);
+  }
+
+  renderedPatientTab(popType, popName, className = '') {
+    return (
+      <li role="presentation" className={className}>
+        <a href={`#${popType}`} aria-controls={popType} role="tab" data-toggle="tab">
+          {popName} ({this.props[popType].total})
+        </a>
+      </li>
+    );
+  }
+
+  renderedPatientList(popType, className = '') {
+    let patientList = null;
+    if (this.props[popType].patients != null) {
+      patientList = <PatientList
+        patients={this.props[popType].patients}
+        total={this.props[popType].total}
+        onPaginate={(offset) => this.props[`fetch${_.upperFirst(popType)}`](this.props.params.qualityReportId, offset)}
+        />;
+    }
+
+    return (
+      <div role="tabpanel" className={`tab-pane ${className}`} id={popType} key={popType}>
+        {patientList}
+      </div>
+    );
   }
 
   render() {
+    let populationTypes = [ 'initialPatientPopulation', 'numeratorPopulation', 'denominatorPopulation', 'outlierPopulation' ];
+
     return (
-      <div className="container">
+      <div className="container populations">
         <Stats patientCount={this.props.patientCount} />
         <div className="row">
           <h1>{this.props.measure.name}</h1>
@@ -53,124 +74,80 @@ class Populations extends Component {
           </div>
 
           <ul className="nav nav-tabs" role="tablist">
-            <li role="presentation" className="active"><a href="#ipp" aria-controls="ipp" role="tab" data-toggle="tab">Initial Patient Population</a></li>
-            <li role="presentation"><a href="#numer" aria-controls="numer" role="tab" data-toggle="tab">Numerator</a></li>
-            <li role="presentation"><a href="#denom" aria-controls="denom" role="tab" data-toggle="tab">Denominator</a></li>
-            <li role="presentation"><a href="#outlier" aria-controls="outlier" role="tab" data-toggle="tab">Outliers</a></li>
+            {this.renderedPatientTab(populationTypes[0], 'Initial Patient Population', 'active')}
+            {this.renderedPatientTab(populationTypes[1], 'Numerator')}
+            {this.renderedPatientTab(populationTypes[2], 'Denominator')}
+            {this.renderedPatientTab(populationTypes[3], 'Outliers')}
           </ul>
 
           <div className="tab-content">
-            <div role="tabpanel" className="tab-pane active" id="ipp">
-              <PatientList patients={this.getPage('initialPatientPopulation')} />
-              {this.paginationDisplay('initialPatientPopulation')}
-            </div>
-            <div role="tabpanel" className="tab-pane" id="numer">
-              <PatientList patients={this.getPage('numerator')} />
-              {this.paginationDisplay('numerator')}
-            </div>
-            <div role="tabpanel" className="tab-pane" id="denom">
-              <PatientList patients={this.getPage('denominator')} />
-              {this.paginationDisplay('denominator')}
-            </div>
-            <div role="tabpanel" className="tab-pane" id="outlier">
-              <PatientList patients={this.getPage('outlier')} />
-              {this.paginationDisplay('outlier')}
-            </div>
+            {populationTypes.map((popType) => this.renderedPatientList(popType, popType === 'initialPatientPopulation' ? 'active' : ''))}
           </div>
         </div>
       </div>
     );
-  }
-
-  getPage(population) {
-    const populationPages = this.props[population];
-    const page = populationPages.find((pp) => pp.page === this.state[population + 'Page']);
-    let patients = [];
-    if (page) {
-      patients = page.patients;
-    }
-    return patients;
-  }
-
-  requestNewPage(population) {
-    return (pageNumber) => {
-      let newState = {};
-      newState[`${population}Page`] = pageNumber;
-      const offset = (pageNumber - 1) * 20;
-      this.props.requestPopulation(this.props.params.qualityReportId, population, offset);
-      this.setState(newState);
-    };
-  }
-
-  paginationDisplay(population) {
-    const populationCount = this.props[population + 'Total'];
-    if (populationCount > 20) {
-      return <Pagination activePage={this.state[population + 'Page']} itemsCountPerPage={20}
-          totalItemsCount={populationCount}
-          pageRangeDisplayed={5} onChange={this.requestNewPage(population)}/>;
-    }
   }
 }
 
 Populations.displayName = 'Populations';
 
 Populations.propTypes = {
-  patientCount: PropTypes.number,
+  patientCount: PropTypes.number.isRequired,
   measure: measureProps,
   qualityReport: qualityReportProps,
-  params: PropTypes.shape({
-    qualityReportId: PropTypes.string
-  }),
-  initialPatientPopulation: PropTypes.arrayOf(PropTypes.shape({
-    page: PropTypes.number,
-    patients: PropTypes.arrayOf(patientProps)
-  })),
-  numerator: PropTypes.arrayOf(PropTypes.shape({
-    page: PropTypes.number,
-    patients: PropTypes.arrayOf(patientProps)
-  })),
-  denominator: PropTypes.arrayOf(PropTypes.shape({
-    page: PropTypes.number,
-    patients: PropTypes.arrayOf(patientProps)
-  })),
-  outlier: PropTypes.arrayOf(PropTypes.shape({
-    page: PropTypes.number,
-    patients: PropTypes.arrayOf(patientProps)
-  })),
-  initialPatientPopulationTotal: PropTypes.number,
-  numeratorTotal: PropTypes.number,
-  denominatorTotal: PropTypes.number,
-  outlierTotal: PropTypes.number,
-  requestPopulation: PropTypes.func,
-  fetchMeasures: PropTypes.func,
-  requestQualityReport: PropTypes.func,
-  fetchPatientCount: PropTypes.func
+  params: PropTypes.shape({ qualityReportId: PropTypes.string.isRequired }).isRequired,
+  initialPatientPopulation: populationProps,
+  numeratorPopulation: populationProps,
+  denominatorPopulation: populationProps,
+  outlierPopulation: populationProps,
+  fetchInitialPatientPopulation: PropTypes.func.isRequired,
+  fetchNumeratorPopulation: PropTypes.func.isRequired,
+  fetchDenominatorPopulation: PropTypes.func.isRequired,
+  fetchOutlierPopulation: PropTypes.func.isRequired,
+  fetchMeasures: PropTypes.func.isRequired,
+  fetchQualityReport: PropTypes.func.isRequired,
+  fetchPatientCount: PropTypes.func.isRequired
 };
 
-export const mapStateToProps = (state, ownProps) => {
-  var props = {};
-  props.patientCount = state.patientCount;
-  props.qualityReport = state.qualityReports.find((qr) => qr.id === ownProps.params.qualityReportId);
-  const pops = ['initialPatientPopulation', 'numerator', 'denominator', 'outlier'];
-  pops.forEach((pop) => {
-    props[pop] = [];
-    if (state.populations[ownProps.params.qualityReportId]) {
-      props[pop + 'Total'] = state.populations[ownProps.params.qualityReportId][pop + 'Total'];
-    }
-  });
-  let qrPopulations = state.populations[ownProps.params.qualityReportId];
-  if (qrPopulations && state.definitions.measures.length > 0 && props.qualityReport) {
-    pops.forEach((pop) => {
-      props[pop] = qrPopulations[pop];
-    });
-    props.measure = state.definitions.measures.find((m) => m.hqmfId === props.qualityReport.measureId);
-  } else {
-    props.measure = {name: 'Loading', description: 'Loading',
-      category: 'Loading', hqmfId: 'Loading', cmsId: 'Loading'};
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchInitialPatientPopulation,
+    fetchNumeratorPopulation,
+    fetchDenominatorPopulation,
+    fetchOutlierPopulation,
+    fetchMeasures,
+    fetchQualityReport,
+    fetchPatientCount
+  }, dispatch);
+}
+
+export function mapStateToProps(state, ownProps) {
+  let qualityReport;
+
+  if (state.qualityReport.qualityReports.length > 0) {
+    qualityReport = state.qualityReport.qualityReports.find((qr) => qr.id === ownProps.params.qualityReportId);
+  }
+  
+  let measure = state.measure.measures.find((measure) => measure.hqmfId === qualityReport.measureId);
+  if (measure == null) {
+    measure = {
+      name: 'Loading',
+      description: 'Loading',
+      category: 'Loading',
+      hqmfId: 'Loading',
+      cmsId: 'Loading'
+    };
   }
 
-  return props;
-};
+  return {
+    patientCount: state.patient.patientCount,
+    initialPatientPopulation: state.population.initialPatientPopulation,
+    numeratorPopulation: state.population.numeratorPopulation,
+    denominatorPopulation: state.population.denominatorPopulation,
+    outlierPopulation: state.population.outlierPopulation,
+    qualityReport,
+    measure
+  };
+}
 
-export default connect(mapStateToProps, { requestPopulation, fetchMeasures,
-                        requestQualityReport, fetchPatientCount })(Populations);
+export default connect(mapStateToProps, mapDispatchToProps)(Populations);

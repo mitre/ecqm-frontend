@@ -55,7 +55,7 @@ CollapsiblePanel.propTypes = {
   panelIcon: PropTypes.string,
   isNested: PropTypes.bool,
   hasNested: PropTypes.bool,
-  children: PropTypes.element.isRequired
+  children: PropTypes.element
 };
 
 CollapsiblePanel.defaultProps = { isNested: false, hasNested: false };
