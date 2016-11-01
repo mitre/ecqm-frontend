@@ -10,6 +10,16 @@ the [ecqm Server](https://github.com/mitre/ecqm).
 You can find [install instructions for Ubuntu](https://github.com/mitre/ecqm-frontend/wiki/Ubuntu-16.04.1-Installation)
 on our wiki.
 
+### Development Setup
+```
+yarn install
+```
+
+### Test
+```
+yarn test
+```
+
 ## License
 
 Copyright 2016 The MITRE Corporation
