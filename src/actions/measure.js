@@ -9,7 +9,7 @@ import {
 export function fetchMeasures() {
   return {
     type: FETCH_MEASURES,
-    payload: retrieve("/Measure")
+    payload: retrieve("/CQMMeasure")
   };
 }
 
